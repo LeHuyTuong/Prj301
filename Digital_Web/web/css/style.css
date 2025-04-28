@@ -1,8 +1,9 @@
-
+body{
+    background-color: #E7E7E7;
+}
 .container{
     width: 886px;
-    height: 1000px;
-    border : 1px solid black;
+    height: auto;
     margin: 0 auto;
 }
 
@@ -28,4 +29,10 @@
     background: url(../images/bg.jpg);
     width: 886px;
     height: 600px;
+}
+
+.footer{
+    background: url(../images/footer.jpg);
+    width: 886px;
+    height: 78px;
 }
