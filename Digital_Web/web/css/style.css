@@ -1,0 +1,31 @@
+
+.container{
+    width: 886px;
+    height: 1000px;
+    border : 1px solid black;
+    margin: 0 auto;
+}
+
+.preheader{
+    background: url(../images/preheader.jpg);
+    width: 886px;
+    height: 71px;
+}
+
+.header{
+    background: url(../images/header.jpg);
+    width: 886px;
+    height: 76px;
+}
+
+.menu{
+    background: url(../images/menu.jpg);
+    width: 886px;
+    height: 32px;
+}
+
+.main{
+    background: url(../images/bg.jpg);
+    width: 886px;
+    height: 600px;
+}
