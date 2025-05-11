@@ -5,6 +5,7 @@ import entity.Digital;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,5 +69,22 @@ public class DigitalDAO {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    public int count(String txt) throws SQLException {
+        
+        try {
+            String query = "select count (*) from digital where title like ?";
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1,"%"+txt+"%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

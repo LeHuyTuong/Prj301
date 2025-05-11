@@ -4,8 +4,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <title>Search Result</title>
+        <link href="css/search.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container">
@@ -15,14 +15,25 @@
             <div class="menu">
                 <a href="#">News</a>
             </div>
-            <div class="main">
-                <div class="left">
-                    <div class="title">${top1.title}</div>
-                    <div class="image">
-                        <img src="${imagePath}${top1.image}" alt=""/>
+            <div class="main">                
+                <c:forEach items="${list}" var="x">
+                    <div class="tittle">
+                        <a href="DetailControl?id=${x.id}">      
+                            ${x.title}
+                        </a>
                     </div>
-                    <div class="description">${top1.description}</div>
-                    <div class="information">${top1.author} | ${top1.timePost}</div>
+                    <div class="image_search">
+                        <img src="${imagePath}${x.image}" alt=""/>
+                    </div>
+                    <div class="text_search">
+                        ${x.shortDes}
+                    </div>
+                    <br>
+                </c:forEach>
+                <div class="paging">
+                        <c:forEach begin="1" end="${endPage}" var="i">
+                            <a class="${i==index?"active":""}" href="SearchControl?index=${i}&txtSearch=${txt}">${i}</a>
+                        </c:forEach>
                 </div>
                 <div class="right">
                     <div class="newR">Digital News</div>
@@ -46,5 +57,7 @@
             </div>
             <div class="footer"></div>
         </div>
-    </body>
+        
+    </div>
+</body>
 </html>

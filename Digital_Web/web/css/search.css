@@ -5,9 +5,6 @@ body{
   width: 886px;
   margin: 20px auto;
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  overflow: hidden; /* contain your floats/flex items */
-  border-radius: 4px;
 }
 
 .preheader{
@@ -84,8 +81,8 @@ body{
 .right{
     width: 30%;
     height: auto;
-    padding-left: 60%;
-    padding-right: 80px;
+    margin-left: 70%;
+
 }
 
 .newR{
