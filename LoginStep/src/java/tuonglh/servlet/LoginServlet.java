@@ -10,6 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import tuonglh.registration.RegistrationDAO;
 
 /**
  *
@@ -35,11 +37,19 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("txtPassword");
         String button  = request.getParameter("btAction");
         try {
-            out.println("User " + username + "_password" + password +
-                        "_button" + button);
-            System.out.println("User " + username + "_password" + password +
-                        "_button" + button);
-        }finally{
+            if(button.equals("Login")){
+                RegistrationDAO dao = new RegistrationDAO();
+                boolean result  = dao.checkLogin(username, password);
+                if(result){
+                    
+                }
+            }
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }catch(ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        finally{
             out.close();
         }
     }
