@@ -16,7 +16,7 @@ import tuonglh.utils.DBHelper;
  * @author USER
  */
 public class RegistrationDAO implements Serializable{
-    public boolean checkLogin(String username, String password)
+    public boolean checkLogin(int phoneNumber, String password)
             throws SQLException, ClassNotFoundException
     {
         Connection con = null;
@@ -26,22 +26,24 @@ public class RegistrationDAO implements Serializable{
             //1.Connect DB
             con = DBHelper.makeConnection();
             if(con != null){
-                //2.Create String SQL
-                String sql = "Select username"
-                        + "FROM Registration"
-                        + "WHERE username = ? "
+                //2.Model queries from DB 
+                //2.1 Create SQL String
+                String sql = "Select phoneNumber "
+                        + "FROM Registration " 
+                        + "WHERE phoneNumber = ? "
                         + "AND password = ?";
-                //3.Create SQL Statement
+                //2.2 Create  Statement Object
+                
                 stm = con.prepareStatement(sql);
-                stm.setString(1, username);
+                stm.setInt(1, phoneNumber);
                 stm.setString(2, password);
                 //4.Execute Query
                 rs = stm.executeQuery();
                 //5.Process Result
                 if(rs.next()){
                     return true;
-                }
-            }
+                }//user is existed
+            }//connection available buoc 12 trong so do 
         }finally{
             if(rs != null){
                 rs.close();

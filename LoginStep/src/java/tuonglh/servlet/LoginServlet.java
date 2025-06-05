@@ -19,6 +19,9 @@ import tuonglh.registration.RegistrationDAO;
  */
 public class LoginServlet extends HttpServlet {
 
+    private static String INVALID_PAGE = "invalid.html";
+    private static String SEARCH_PAGE = "search.html";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,24 +35,39 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        String button  = request.getParameter("btAction");
+        String url = INVALID_PAGE;
+        String button = request.getParameter("btAction");
         try {
-            if(button.equals("Login")){
+            if (button.equals("Login")) {
+                String phoneStr = request.getParameter("txtPhoneNumber");
+                int phone = Integer.parseInt(phoneStr);
+                String password = request.getParameter("txtPassword");
+                //2. Controller call method of Model
+                //2.1 New DAO Object
                 RegistrationDAO dao = new RegistrationDAO();
-                boolean result  = dao.checkLogin(username, password);
-                if(result){
-                    
+
+                //2.2 Call method of DAO Object
+                boolean result = dao.checkLogin(phone, password);
+
+                //3. Process tra ket qua cho controller
+                if (result) {
+                    url = SEARCH_PAGE;
+                    System.out.println(">> Đăng nhập thành công!");
+                } else {
+                    System.out.println(">> Đăng nhập thất bại!");
                 }
-            }
-        }catch(SQLException ex){
+
+                System.out.println("Phone nhập: " + phone);
+                System.out.println("Pass nhập: " + password);
+
+            }//user clicked Login button
+        } catch (SQLException ex) {
             ex.printStackTrace();
-        }catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-        }
-        finally{
+        } finally {
+
+            response.sendRedirect(url);
             out.close();
         }
     }
