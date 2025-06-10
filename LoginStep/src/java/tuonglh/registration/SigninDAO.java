@@ -15,7 +15,7 @@ import tuonglh.utils.DBHelper;
  *
  * @author USER
  */
-public class RegistrationDAO implements Serializable{
+public class SigninDAO implements Serializable{
     public boolean checkLogin(int phoneNumber, String password)
             throws SQLException, ClassNotFoundException
     {
