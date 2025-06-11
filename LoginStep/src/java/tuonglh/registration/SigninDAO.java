@@ -29,7 +29,7 @@ public class SigninDAO implements Serializable{
                 //2.Model queries from DB 
                 //2.1 Create SQL String
                 String sql = "Select phoneNumber "
-                        + "FROM Registration " 
+                        + "FROM Signin " 
                         + "WHERE phoneNumber = ? "
                         + "AND password = ?";
                 //2.2 Create  Statement Object

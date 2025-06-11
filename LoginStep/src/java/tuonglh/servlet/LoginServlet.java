@@ -4,6 +4,7 @@
  */
 package tuonglh.servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +20,8 @@ import tuonglh.registration.SigninDAO;
  */
 public class LoginServlet extends HttpServlet {
 
-    private static String INVALID_PAGE = "invalid.html";
-    private static String SEARCH_PAGE = "search.html";
+    private final String INVALID_PAGE = "invalid.html";
+    private final String SEARCH_PAGE = "search.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,17 +50,14 @@ public class LoginServlet extends HttpServlet {
                 if (result) {
                     url = SEARCH_PAGE;
                     System.out.println(">> Đăng nhập thành công!");
-                } else {
-                    System.out.println(">> Đăng nhập thất bại!");
-                }
-                System.out.println("Phone nhập: " + phone);
-                System.out.println("Pass nhập: " + password);
+                } 
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         } finally {
-            response.sendRedirect(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
             out.close();
         }
     }

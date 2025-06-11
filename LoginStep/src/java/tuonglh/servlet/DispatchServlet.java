@@ -20,9 +20,9 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name="DispatchServlet", urlPatterns={"/DispatchServlet"})
 public class DispatchServlet extends HttpServlet {
-    private static String LOGIN_PAGE = "login.html";
-    private static String LOGIN_CONTROLLER = "LoginServlet";
-    private static String SEARCH_CONTROLLER = "SearchLastnameServlet";
+    private final  String LOGIN_PAGE = "login.html";
+    private final  String LOGIN_CONTROLLER = "LoginServlet";
+    private final  String SEARCH_CONTROLLER = "SearchLastnameServlet";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -32,10 +32,12 @@ public class DispatchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+        String button = request.getParameter("btAction");
+        String url = LOGIN_PAGE;
         response.setContentType("text/html;charset=UTF-8");
         //1. Which button user click
-        String button = request.getParameter("txtSearchValue");
-        String url = LOGIN_PAGE;
+        
         try {
             
             //1.Check Button 
@@ -44,7 +46,7 @@ public class DispatchServlet extends HttpServlet {
             }else{
                 switch (button) {
                     case "Login":
-                        url = LOGIN_PAGE;
+                        url = LOGIN_CONTROLLER;
                         break;
                     case "Search":
                         url = SEARCH_CONTROLLER;
@@ -56,6 +58,7 @@ public class DispatchServlet extends HttpServlet {
         }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
+            
         }
     } 
 
