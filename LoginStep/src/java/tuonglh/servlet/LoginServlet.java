@@ -11,8 +11,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import tuonglh.registration.SigninDAO;
+import tuonglh.registration.SigninDTO;
 
 /**
  *
@@ -21,7 +23,7 @@ import tuonglh.registration.SigninDAO;
 public class LoginServlet extends HttpServlet {
 
     private final String INVALID_PAGE = "invalid.html";
-    private final String SEARCH_PAGE = "search.html";
+    private final String SEARCH_PAGE = "search.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +39,19 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String url = INVALID_PAGE;
-        String phoneStr = request.getParameter("txtPhoneNumber");
-        int phone = Integer.parseInt(phoneStr);
+        String phone = request.getParameter("txtPhoneNumber");
         String password = request.getParameter("txtPassword");
         try {
                 //2. Controller call method of Model
                 //2.1 New DAO Object
                 SigninDAO dao = new SigninDAO();
                 //2.2 Call method of DAO Object
-                boolean result = dao.checkLogin(phone, password);
+                SigninDTO result = dao.checkLogin(phone, password);
                 //3. Process tra ket qua cho controller
-                if (result) {
+                if (result != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("USER_INFO", result);
                     url = SEARCH_PAGE;
-                    System.out.println(">> Đăng nhập thành công!");
                 } 
         } catch (SQLException ex) {
             ex.printStackTrace();

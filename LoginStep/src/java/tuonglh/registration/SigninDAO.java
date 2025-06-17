@@ -18,9 +18,10 @@ import tuonglh.utils.DBHelper;
  * @author USER
  */
 public class SigninDAO implements Serializable{
-    public boolean checkLogin(int phoneNumber, String password)
+    public SigninDTO checkLogin(String phoneNumber, String password)
             throws SQLException, ClassNotFoundException
     {
+        SigninDTO result = null;
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -30,20 +31,22 @@ public class SigninDAO implements Serializable{
             if(con != null){
                 //2.Model queries from DB 
                 //2.1 Create SQL String
-                String sql = "Select phoneNumber "
+                String sql = "Select role, name  "
                         + "FROM Signin " 
                         + "WHERE phoneNumber = ? "
                         + "AND password = ?";
                 //2.2 Create  Statement Object
                 
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, phoneNumber);
+                stm.setString(1, phoneNumber);
                 stm.setString(2, password);
                 //4.Execute Query
                 rs = stm.executeQuery();
                 //5.Process Result
                 if(rs.next()){
-                    return true;
+                    String fullName = rs.getString("name");
+                    boolean isAdmin = rs.getBoolean("role");
+                    result = new SigninDTO(phoneNumber, password, isAdmin, fullName);
                 }//user is existed
             }//connection available buoc 12 trong so do 
         }finally{
@@ -57,7 +60,7 @@ public class SigninDAO implements Serializable{
                 con.close();
             }
         }
-        return false;
+        return result;
     } 
     
     public List<SigninDTO> accounts;
