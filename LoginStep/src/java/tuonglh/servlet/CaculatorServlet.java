@@ -13,17 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name="DispatchServlet", urlPatterns={"/DispatchServlet"})
-public class DispatchServlet extends HttpServlet {
-    private final  String LOGIN_PAGE = "login.html";
-    private final  String LOGIN_CONTROLLER = "LoginServlet";
-    private final  String SEARCH_CONTROLLER = "SearchLastnameServlet";
-    private final  String CACULATOR_CONTROLLER = "CaculatorServlet";
+@WebServlet(name="CaculatorServlet", urlPatterns={"/CaculatorServlet"})
+public class CaculatorServlet extends HttpServlet {
+   private final String CALCULATOR_PAGE ="caculator.jsp"; 
+   private final String INVALID_PAGE = "invalid.html";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,36 +32,31 @@ public class DispatchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
         response.setContentType("text/html;charset=UTF-8");
-        //1. Which button user click
-        
-        try {
+        //B1 get toan bo thong tin tu client
+        String url = INVALID_PAGE;
+        try{
             
-            //1.Check Button 
-            if(button == null){
-                
-            }else{
-                switch (button) {
-                    case "Login":
-                        url = LOGIN_CONTROLLER;
-                        break;
-                    case "Search":
-                        url = SEARCH_CONTROLLER;
-                        break;
-                    case "Caculator":
-                        url= CACULATOR_CONTROLLER;
-                        break;
-                    default:
-                        throw new AssertionError();
-                }
-            }
-        }finally{
+       
+        String num1Str = request.getParameter("txtNum1");
+        String num2Str = request.getParameter("txtNum2");
+        
+        double num1 = Double.parseDouble(num1Str);
+        double num2 = Double.parseDouble(num2Str);
+        
+        double total = num1 + num2;
+        HttpSession session = request.getSession();
+        session.setAttribute("txtNum1", num1Str);
+        session.setAttribute("txtNum2", num2Str);
+        session.setAttribute("result", total);
+        url = CALCULATOR_PAGE;
+        }
+        catch(NumberFormatException ex){
+            ex.printStackTrace();
+        }
+        finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            
         }
     } 
 
