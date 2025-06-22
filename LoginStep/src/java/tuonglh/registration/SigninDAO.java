@@ -82,7 +82,7 @@ public class SigninDAO implements Serializable{
                 //2.1 Create SQL String
                 String sql = "Select phoneNumber, password, role, name  "
                         + "FROM Signin " 
-                        + "WHERE name LIKE ? ";
+                        + "WHERE name LIKE ?";
                 //2.2 Create  Statement Object
                 
                 stm = con.prepareStatement(sql);

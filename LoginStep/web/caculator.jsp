@@ -18,8 +18,14 @@
             <input type="submit" value="Caculator" name="btAction" />
             <input type="reset" value="Reset" />
         </form> </br>
-        Total <b>${sessionScope.result}</b>
-
+        Total <b>${applicationScope.result}</b>
+        <form method="POST">          
+            Num 1 <input type="text" name="num1" value="${param.num1}" /> <br/>
+            Num 2 <input type="text" name="num2" value="${param.num2}" /> <br/>
+            Total : ${param["num1"] + param.num2} <br/>
+            Avg : ${ (param.num1 + param["num2"]) / 2 } <br/>
+            <input type="submit" value="Calculate" />
+        </form>
         
     </body>
 </html>

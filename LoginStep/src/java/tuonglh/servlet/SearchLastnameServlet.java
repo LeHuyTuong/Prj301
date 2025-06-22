@@ -24,7 +24,7 @@ import tuonglh.registration.SigninDTO;
  */
 @WebServlet(name="SearchLastnameServlet", urlPatterns={"/SearchLastnameServlet"})
 public class SearchLastnameServlet extends HttpServlet {
-    private final String SEARCH_PAGE ="search.html";
+    private final String SEARCH_PAGE ="search.jsp";
     private final String SEARCH_RESULT ="search.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -48,11 +48,9 @@ public class SearchLastnameServlet extends HttpServlet {
                     SigninDAO dao = new SigninDAO();
                     
                 //2.2 Call Method of DAO Object
-                
-                
                     dao.searchLastName(searchValue);
                 //3.Get du lieu tu method 
-                    List<SigninDTO> result = dao.getAccounts();
+                List<SigninDTO> result = dao.getAccounts();
                 url = SEARCH_RESULT;
                 
                 // gio thi da co thong tin roi muon set attribute de hien thi view thi  se setAttri vao jsp

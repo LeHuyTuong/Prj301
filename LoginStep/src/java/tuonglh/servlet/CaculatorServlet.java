@@ -6,6 +6,7 @@
 package tuonglh.servlet;
 
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -45,10 +46,10 @@ public class CaculatorServlet extends HttpServlet {
         double num2 = Double.parseDouble(num2Str);
         
         double total = num1 + num2;
-        HttpSession session = request.getSession();
-        session.setAttribute("txtNum1", num1Str);
-        session.setAttribute("txtNum2", num2Str);
-        session.setAttribute("result", total);
+        ServletContext application = request.getServletContext();
+        application.setAttribute("txtNum1", num1Str);
+        application.setAttribute("txtNum2", num2Str);
+        application.setAttribute("result", total);
         url = CALCULATOR_PAGE;
         }
         catch(NumberFormatException ex){
