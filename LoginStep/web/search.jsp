@@ -64,11 +64,11 @@
                                 <td>
                                     <c:url var="deleteLink" value="DispatchServlet">
                                         <c:param name="btAction" value="Delete" />
-                                        <c:param name="pk" value="${dto.name}" />
+                                        <c:param name="pk" value="${dto.phoneNumber}" />
                                         <c:param name="lastSearchValue"
-                                                 value="" />
+                                                 value="${param.txtSearchValue}" />
                                     </c:url>
-                                    <a href="">Delete</a>
+                                    <a href="${deleteLink}">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>

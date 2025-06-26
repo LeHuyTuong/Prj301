@@ -66,7 +66,6 @@ public class SearchLastnameServlet extends HttpServlet {
             rd.forward(request, response);
         }
     } 
-    // Nhung ma 
     
     
     

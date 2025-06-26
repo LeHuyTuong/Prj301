@@ -12,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import tuonglh.registration.SigninDAO;
 
 /**
  *
@@ -19,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name="DeleteServlet", urlPatterns={"/DeleteServlet"})
 public class DeleteServlet extends HttpServlet {
-   
+    private final String ERROR_PAGES = "error.html";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -30,12 +32,30 @@ public class DeleteServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("");
         
+        //B1 : get param 
+        String phoneNumber = request.getParameter("pk");
+        String searchValue = request.getParameter("lastSearchValue");
+        
+        String url = ERROR_PAGES;
         try{
-            
-        }finally{
-            
+            // 2.New and Call method
+            //2.1 New DAO 
+            SigninDAO dao = new SigninDAO();
+            //2.2 Call method from DAO Object
+            boolean result = dao.deleteValue(phoneNumber);
+            if(result == true){
+                 url = "DispatchServlet"
+                    + "?btAction=Search"
+                    + "&txtSearchValue=" + searchValue; 
+            }
+        }catch(SQLException ex){
+            log("SQL Exception" + ex.getMessage());
+        }catch(ClassNotFoundException ex){
+            log("File Not Found " + ex.getMessage());
+        }
+        finally{
+            response.sendRedirect(url);
         }
     } 
 

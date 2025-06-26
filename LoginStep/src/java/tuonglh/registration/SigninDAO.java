@@ -91,7 +91,7 @@ public class SigninDAO implements Serializable{
                 //4.Execute Query
                 rs = stm.executeQuery();
                 //5.Process Result
-                if(rs.next()){
+                while(rs.next()){
                     // lay nhieu dong tu db 
                     String phoneNumber = rs.getString("phoneNumber");
                     String password = rs.getString("password");
@@ -121,4 +121,42 @@ public class SigninDAO implements Serializable{
             }
         }
     }
+    
+    public boolean deleteValue(String phoneNumber)
+            throws SQLException, ClassNotFoundException
+    {
+        boolean result = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        try{ 
+            //1.Connect DB
+            con = DBHelper.makeConnection();
+            if(con != null){
+                //2.Model queries from DB 
+                //2.1 Create SQL String
+                String sql = "Delete "
+                        + "From Signin "
+                        + "Where phoneNumber = ?";
+                //2.2 Create  Statement Object
+                
+                stm = con.prepareStatement(sql);
+                stm.setString(1, phoneNumber);   // chi co 1 tham chieu
+                //4.Execute Query
+                int effectRows = stm.executeUpdate();  // nhung cau lenh ve insert delete hay update thi se tra ve so dong 
+                
+                //3. check so dong co hieu luc
+                if(effectRows > 0){
+                    result = true;
+                }
+            }//connection available buoc 12 trong so do 
+        }finally{
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return result;
+    } 
 }
