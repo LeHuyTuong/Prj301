@@ -5,7 +5,6 @@
 
 package tuonglh.servlet;
 
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,13 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author USER
  */
-@WebServlet(name="DispatchServlet", urlPatterns={"/DispatchServlet"})
-public class DispatchServlet extends HttpServlet {
-    private final  String LOGIN_PAGE = "login.html";
-    private final  String LOGIN_CONTROLLER = "LoginServlet";
-    private final  String SEARCH_CONTROLLER = "SearchLastnameServlet";
-    private final  String CACULATOR_CONTROLLER = "CaculatorServlet";
-    private final  String DELETER_CONTROLLER = "DeleteServlet";
+@WebServlet(name="DeleteServlet", urlPatterns={"/DeleteServlet"})
+public class DeleteServlet extends HttpServlet {
+   
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,38 +29,12 @@ public class DispatchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
         response.setContentType("text/html;charset=UTF-8");
-        //1. Which button user click
+        String username = request.getParameter("");
         
-        try {
+        try{
             
-            //1.Check Button 
-            if(button == null){
-                
-            }else{
-                switch (button) {
-                    case "Login":
-                        url = LOGIN_CONTROLLER;
-                        break;
-                    case "Search":
-                        url = SEARCH_CONTROLLER;
-                        break;
-                    case "Caculator":
-                        url= CACULATOR_CONTROLLER;
-                        break;
-                    case "Delete":
-                        url = DELETER_CONTROLLER;
-                        break;
-                    default:
-                        throw new AssertionError();
-                }
-            }
         }finally{
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
             
         }
     } 

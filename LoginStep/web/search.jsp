@@ -40,6 +40,7 @@
                             <th>Password</th>
                             <th>Full name</th>
                             <th>Role</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,15 @@
                                 </td>
                                 <td>
                                     ${dto.role}
+                                </td>
+                                <td>
+                                    <c:url var="deleteLink" value="DispatchServlet">
+                                        <c:param name="btAction" value="Delete" />
+                                        <c:param name="pk" value="${dto.name}" />
+                                        <c:param name="lastSearchValue"
+                                                 value="" />
+                                    </c:url>
+                                    <a href="">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>
