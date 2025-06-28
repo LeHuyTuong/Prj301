@@ -37,7 +37,7 @@ public class UpdateAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //B1 get data tu request 
-        String phone = request.getParameter("txtPhoneNumber");
+        String phone = request.getParameter("txtphoneNumber");
         String password = request.getParameter("txtPassword");
         String role = request.getParameter("chkRole");
         String searchValue = request.getParameter("lastSearchValue");
@@ -50,25 +50,24 @@ public class UpdateAccountServlet extends HttpServlet {
 
             //2.2 Call method from DAO Object 
             boolean result = dao.updateAccount(phone, password, role);
-            System.out.println("Bug sau result");
+           // System.out.println("Bug sau result");
             //3 Process 
             if (result == true) {
-                System.out.println("Bug nè vao duoc result");
                 url = "DispatchServlet"
                         + "?btAction=Search"
                         + "&txtSearchValue=" + searchValue; // co bao nhieu input thi them bay nhieu param vao trong url 
-                System.out.println("Bug nè nhan duoc url roi");
+                //System.out.println("Bug nè nhan duoc url roi");
             }// co gia tri trong DTO 
-            
+           //  System.out.println("ket qua result" + result);
         }catch(SQLException ex){
             log("SQL:" + ex.getMessage());
         }catch(ClassNotFoundException ex){
             log("Class not found : "+ ex.getMessage());
         }
         finally {
-            System.out.println("Bug nè di thoi ");
+           // System.out.println("Bug nè di thoi ");
             response.sendRedirect(url);
-            System.out.println("Bug nè di thoi ");
+            //System.out.println("Bug nè di thoi ");
         }
     }
 
