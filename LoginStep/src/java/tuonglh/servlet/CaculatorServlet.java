@@ -53,7 +53,7 @@ public class CaculatorServlet extends HttpServlet {
         url = CALCULATOR_PAGE;
         }
         catch(NumberFormatException ex){
-            ex.printStackTrace();
+            log("Number Format" + ex.getMessage());
         }
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

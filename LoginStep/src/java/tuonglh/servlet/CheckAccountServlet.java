@@ -5,16 +5,16 @@
 
 package tuonglh.servlet;
 
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.List;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -22,10 +22,10 @@ import tuonglh.registration.SigninDTO;
  *
  * @author USER
  */
-@WebServlet(name="SearchLastnameServlet", urlPatterns={"/SearchLastnameServlet"})
-public class SearchLastnameServlet extends HttpServlet {
-    private final String SEARCH_PAGE ="search.jsp";
-    private final String SEARCH_RESULT ="search.jsp";
+@WebServlet(name="CheckAccountServlet", urlPatterns={"/CheckAccountServlet"})
+public class CheckAccountServlet extends HttpServlet {
+    private final String LOGIN_PAGES = "login.html";
+    private final String SEARCH_PAGES = "search.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -36,39 +36,40 @@ public class SearchLastnameServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //1,Get all user's information
-        
-        String searchValue = request.getParameter("txtSearchValue");
-        String url = SEARCH_PAGE;
-        try {
-            if(!searchValue.trim().isEmpty()){
-                // ko empty trim 
-                //2 Controller call method of Model 
-                //2.1 New DAO Object 
-                    SigninDAO dao = new SigninDAO();
-                    
-                //2.2 Call Method of DAO Object
-                    dao.searchLastName(searchValue);
-                //3.Get du lieu tu method 
-                List<SigninDTO> result = dao.getAccounts();
-                url = SEARCH_RESULT;
+        String url = LOGIN_PAGES;
+        try  {
+            //B1 neu co cookie thi se get cookie 
+            Cookie[] cookies = request.getCookies(); // cookie la 1 file nen la mang string 
+            //B2 get data tu cookie neu co 
+            if(cookies != null){
+                Cookie recentCookie = cookies[cookies.length - 1];
+                String phoneNumber = recentCookie.getName();   // name = value cua param 
+                String password = recentCookie.getValue();
                 
-                // gio thi da co thong tin roi muon set attribute de hien thi view thi  se setAttri vao jsp
-                request.setAttribute("SEARCH_RESULT", result);
+                //B3 call method tu DAO 
+                SigninDAO dao = new SigninDAO();
+                SigninDTO result =  dao.checkLogin(phoneNumber, password);
+                
+                //B4 process
+                if(result != null){
+                    //get session neu co 
+                    url = SEARCH_PAGES;
+                    HttpSession session = request.getSession();
+                    session.setAttribute("USER_INFO", result);
+                    
+                    
+                }// set session 
             }
         }catch(SQLException ex){
-            log("SQL :" + ex.getMessage());
+            log("SQL: " + ex.getMessage());
         }catch(ClassNotFoundException ex){
-            log("Class Not Found : " + ex.getMessage());
+            log("Class Not Found :"+ ex.getMessage());
         }
-        finally{
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        finally {
+            response.sendRedirect(url); // khi server stateless voi browser thi file cookie van con nen dung dispatcher cung duoc 
         }
     } 
-    
-    
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.

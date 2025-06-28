@@ -8,6 +8,7 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,6 +39,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         String url = INVALID_PAGE;
         String phone = request.getParameter("txtPhoneNumber");
         String password = request.getParameter("txtPassword");
@@ -52,11 +54,15 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("USER_INFO", result);
                     url = SEARCH_PAGE;
+                    
+                    Cookie cookie = new Cookie(phone, password);
+                    cookie.setMaxAge(60 * 5);
+                    response.addCookie(cookie);  // gio cookie da bao gom ben trong response khi server tra ve browser
                 } 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL :" + ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            log("Class Not Found : " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

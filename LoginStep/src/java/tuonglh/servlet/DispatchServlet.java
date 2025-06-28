@@ -25,6 +25,8 @@ public class DispatchServlet extends HttpServlet {
     private final  String SEARCH_CONTROLLER = "SearchLastnameServlet";
     private final  String CACULATOR_CONTROLLER = "CaculatorServlet";
     private final  String DELETER_CONTROLLER = "DeleteServlet";
+    private final  String CHECK_ACCOUNT_CONTROLLER ="CheckAccountServlet";
+    private final  String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -44,7 +46,7 @@ public class DispatchServlet extends HttpServlet {
             
             //1.Check Button 
             if(button == null){
-                
+                url = CHECK_ACCOUNT_CONTROLLER;
             }else{
                 switch (button) {
                     case "Login":
@@ -58,6 +60,9 @@ public class DispatchServlet extends HttpServlet {
                         break;
                     case "Delete":
                         url = DELETER_CONTROLLER;
+                        break;
+                    case "Update":
+                        url = UPDATE_ACCOUNT_CONTROLLER;
                         break;
                     default:
                         throw new AssertionError();
