@@ -27,6 +27,7 @@ public class DispatchServlet extends HttpServlet {
     private final  String DELETER_CONTROLLER = "DeleteServlet";
     private final  String CHECK_ACCOUNT_CONTROLLER ="CheckAccountServlet";
     private final  String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
+    private final  String LOGOUT_ACCOUNT_CONTROLLER = "LogoutAccountServlet";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -63,6 +64,9 @@ public class DispatchServlet extends HttpServlet {
                         break;
                     case "Update":
                         url = UPDATE_ACCOUNT_CONTROLLER;
+                        break;
+                    case "Logout":
+                        url = LOGOUT_ACCOUNT_CONTROLLER;
                         break;
                     default:
                         throw new AssertionError();

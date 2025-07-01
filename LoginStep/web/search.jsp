@@ -16,11 +16,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Search</title>
+        <style>
+            .logout{
+                margin-left: 50%;
+            }
+        </style>
     </head>
     <body>
         <font color = "red">
         Welcome , ${sessionScope.USER_INFO.name}
         </font>
+        <form action="DispatchServlet">
+            <input class="logout" type="submit" value="Logout" name="btAction" />
+        </form>
         <h1>Search Page</h1>
         <form action="DispatchServlet">
             Search Value <input type="text" name="txtSearchValue" 

@@ -53,7 +53,6 @@ public class CheckAccountServlet extends HttpServlet {
                 //B4 process
                 if(result != null){
                     //get session neu co 
-                    url = SEARCH_PAGES;
                     HttpSession session = request.getSession();
                     session.setAttribute("USER_INFO", result);
                     
