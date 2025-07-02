@@ -13,84 +13,85 @@ import java.io.Serializable;
 public class SigninCreateError implements Serializable{
     
     // co 4 loi do nguoi dung tao ra 
-    private String PhoneNumberNotFormat;
-    private String PasswordNotLengthErr;
-    private String ConfirmNotMatch;
-    private String FullNameNotLengthErr;
-    private String PhoneNumberIsExist;
+    private String phoneNumberNotFormat;
+    private String passwordNotLengthErr;
+    private String confirmNotMatch;
+    private String fullNameNotLengthErr;
+    private String phoneNumberIsExist;
 
     public SigninCreateError() {
     }
- 
+
     /**
-     * @return the PhoneNumberNotFormat
+     * @return the phoneNumberNotFormat
      */
     public String getPhoneNumberNotFormat() {
-        return PhoneNumberNotFormat;
+        return phoneNumberNotFormat;
     }
 
     /**
-     * @param PhoneNumberNotFormat the PhoneNumberNotFormat to set
+     * @param phoneNumberNotFormat the phoneNumberNotFormat to set
      */
-    public void setPhoneNumberNotFormat(String PhoneNumberNotFormat) {
-        this.PhoneNumberNotFormat = PhoneNumberNotFormat;
+    public void setPhoneNumberNotFormat(String phoneNumberNotFormat) {
+        this.phoneNumberNotFormat = phoneNumberNotFormat;
     }
 
     /**
-     * @return the PasswordNotLengthErr
+     * @return the passwordNotLengthErr
      */
     public String getPasswordNotLengthErr() {
-        return PasswordNotLengthErr;
+        return passwordNotLengthErr;
     }
 
     /**
-     * @param PasswordNotLengthErr the PasswordNotLengthErr to set
+     * @param passwordNotLengthErr the passwordNotLengthErr to set
      */
-    public void setPasswordNotLengthErr(String PasswordNotLengthErr) {
-        this.PasswordNotLengthErr = PasswordNotLengthErr;
+    public void setPasswordNotLengthErr(String passwordNotLengthErr) {
+        this.passwordNotLengthErr = passwordNotLengthErr;
     }
 
     /**
-     * @return the ConfirmNotMatch
+     * @return the confirmNotMatch
      */
     public String getConfirmNotMatch() {
-        return ConfirmNotMatch;
+        return confirmNotMatch;
     }
 
     /**
-     * @param ConfirmNotMatch the ConfirmNotMatch to set
+     * @param confirmNotMatch the confirmNotMatch to set
      */
-    public void setConfirmNotMatch(String ConfirmNotMatch) {
-        this.ConfirmNotMatch = ConfirmNotMatch;
+    public void setConfirmNotMatch(String confirmNotMatch) {
+        this.confirmNotMatch = confirmNotMatch;
     }
 
     /**
-     * @return the FullNameNotLengthErr
+     * @return the fullNameNotLengthErr
      */
     public String getFullNameNotLengthErr() {
-        return FullNameNotLengthErr;
+        return fullNameNotLengthErr;
     }
 
     /**
-     * @param FullNameNotLengthErr the FullNameNotLengthErr to set
+     * @param fullNameNotLengthErr the fullNameNotLengthErr to set
      */
-    public void setFullNameNotLengthErr(String FullNameNotLengthErr) {
-        this.FullNameNotLengthErr = FullNameNotLengthErr;
+    public void setFullNameNotLengthErr(String fullNameNotLengthErr) {
+        this.fullNameNotLengthErr = fullNameNotLengthErr;
     }
 
     /**
-     * @return the PhoneNumberIsExist
+     * @return the phoneNumberIsExist
      */
     public String getPhoneNumberIsExist() {
-        return PhoneNumberIsExist;
+        return phoneNumberIsExist;
     }
 
     /**
-     * @param PhoneNumberIsExist the PhoneNumberIsExist to set
+     * @param phoneNumberIsExist the phoneNumberIsExist to set
      */
-    public void setPhoneNumberIsExist(String PhoneNumberIsExist) {
-        this.PhoneNumberIsExist = PhoneNumberIsExist;
+    public void setPhoneNumberIsExist(String phoneNumberIsExist) {
+        this.phoneNumberIsExist = phoneNumberIsExist;
     }
+ 
     
     
 }
