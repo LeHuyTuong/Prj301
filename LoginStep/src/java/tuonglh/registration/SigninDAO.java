@@ -204,4 +204,44 @@ public class SigninDAO implements Serializable {
         }
         return result;
     }
+    
+    public boolean createAccount(SigninDTO accounts) throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //B1 ket noi DB
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //B2 Query voi DB
+                //2.1 Tao query 
+                String query = "Insert into Signin("
+                        + "phoneNumber, password, role, name"
+                        + ") Values ("
+                        + "?, ?, ?, ?)";
+
+                //2.2 Set statement vao query
+                stm = con.prepareStatement(query);
+                stm.setString(1, accounts.getPhoneNumber());
+                stm.setString(2, accounts.getPassword());
+                stm.setBoolean(3, accounts.isRole());
+                stm.setString(4, accounts.getName());
+                //2.3 excute
+                
+                int effectRows = stm.executeUpdate();
+
+                if (effectRows > 0) {
+                    result = true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
 }

@@ -16,7 +16,7 @@
         <h1>Create new Account</h1>
         <form action="DispatchServlet" method="POST">
         
-        Username* <input type="text" name="txtUsername" value="" /><br/>
+        PhoneNumber* <input type="text" name="txtPhoneNumber" value="" /><br/>
         Password* <input type="password" name="txtPassword" value="" /><br/>
         Confirm <input type="text" name="txtConfirm" value="" /><br/>
         FullName* <input type="text" name="txtFullName" value="" /><br/>
