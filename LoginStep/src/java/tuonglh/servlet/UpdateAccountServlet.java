@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import org.apache.jasper.tagplugins.jstl.core.Out;
 import tuonglh.registration.SigninDAO;
 
 /**
