@@ -26,6 +26,6 @@
             Avg : ${ (param.num1 + param["num2"]) / 2 } <br/>
             <input type="submit" value="Calculate" />
         </form>
-        
+            <a href="login.html">Return to login page</a>
     </body>
 </html>
