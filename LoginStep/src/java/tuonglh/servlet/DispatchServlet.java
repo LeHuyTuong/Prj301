@@ -29,6 +29,9 @@ public class DispatchServlet extends HttpServlet {
     private final  String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
     private final  String LOGOUT_ACCOUNT_CONTROLLER = "LogoutAccountServlet";
     private final  String CREATE_ACCOUNT_CONTROLLER = "CreateAccountServlet";
+    private final  String ADD_TO_CART_CONTROLLER ="AddToCartServlet";
+    private final  String REMOVE_ITEM_CART_CONTROLLER = "RemoveItemCartServlet";
+    private final String View_CART_PAGE = "viewCart.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -71,6 +74,15 @@ public class DispatchServlet extends HttpServlet {
                         break;
                     case "Registration":
                         url = CREATE_ACCOUNT_CONTROLLER;
+                        break;
+                    case "Add item to cart":
+                        url = ADD_TO_CART_CONTROLLER;
+                        break;
+                    case "View your cart":
+                        url = View_CART_PAGE;
+                        break;
+                    case "Remove":
+                        url = REMOVE_ITEM_CART_CONTROLLER;
                         break;
                     default:
                         throw new AssertionError();
