@@ -1,144 +1,106 @@
 
 # Java Web CRUD Application - MVC2 Pattern
 
-## 📚 Giới thiệu
+## 🧩 Mô tả Dự Án
 
-Đây là dự án Web Application được xây dựng dựa trên mô hình **MVC2**, sử dụng công nghệ **Java Servlet**, **JSP**, **JDBC**, hướng đến việc quản lý tài khoản người dùng với các chức năng:
+Đây là một ứng dụng web đơn giản được xây dựng bằng **Java Servlet** theo mô hình **MVC2**, nhằm mục tiêu minh họa cách hoạt động của các thành phần như:
+- **Servlets** (Controller)
+- **Java Beans / DTO / DAO** (Model)
+- **JSP** (View)
+- **Filter** (Front Controller Pattern)
 
-✅ Đăng nhập 
-✅ Đăng ký tài khoản  
-✅ Tìm kiếm tài khoản theo Lastname  
-✅ Cập nhật mật khẩu và phân quyền  
-✅ Xóa tài khoản  
-✅ Quản lý Session, Cookies  
-✅ Xử lý lỗi hệ thống và người dùng  
+Chức năng chính:
+- Đăng ký, đăng nhập và đăng xuất tài khoản
+- Tìm kiếm người dùng theo họ
+- Tìm kiếm mặt hàng
+- Thêm, xóa sản phẩm khỏi giỏ hàng
+- Tính tổng tiền trong giỏ hàng
 
-Ứng dụng triển khai trên server **Apache Tomcat**, thao tác trực tiếp với cơ sở dữ liệu thông qua lớp **DAO** và mô hình truyền dữ liệu **DTO**.
-
----
-
-## 🏗️ Cấu trúc dự án
+## 📁 Cấu Trúc Thư Mục
 
 ```
-WebApp/
-├── Web Pages/
-│   ├── createAccount.html
-│   ├── createAccount.jsp
-│   ├── login.html
-│   ├── search.html
-│   ├── search.jsp
-│   ├── invalid.html
-│   ├── error.html
-│   └── WEB-INF/
-│       └── web.xml
-├── Source Packages/
-│   ├── tuonglh.controller/
+├── src/
+│   ├── controller/
+│   │   ├── FilterDispatcher.java
 │   │   ├── DispatchServlet.java
 │   │   ├── CreateAccountServlet.java
-│   │   ├── UpdateAccountServlet.java
-│   │   ├── DeleteAccountServlet.java
-│   │   ├── LogoutAccountServlet.java
 │   │   ├── CheckAccountServlet.java
-│   │   └── SearchLastnameServlet.java
-│   ├── tuonglh.registration/
-│   │   ├── RegistrationDTO.java
-│   │   ├── RegistrationDAO.java
-│   │   └── RegistrationCreateError.java
-│   └── tuonglh.utils/
-│       └── DBHelper.java
+│   │   ├── LogoutAccountServlet.java
+│   │   ├── AddToCartServlet.java
+│   │   ├── RemoveItemCartServlet.java
+│   │   ├── CartServlet.java
+│   │   ├── CaculatorServlet.java
+│   │   ├── DeleteServlet.java
+│   │   ├── SearchLastnameServlet.java
+│   │   ├── SearchItemServlet.java
+│   │   ├── UpdateAccountServlet.java
+│   ├── model/
+│   │   ├── SigninDAO.java
+│   │   ├── SigninDTO.java
+│   │   ├── SigninCreateError.java
+│   │   ├── ItemDAO.java
+│   │   ├── ItemDTO.java
+│   │   ├── CartObject.java
+│   ├── utils/
+│   │   ├── DBHelper.java
+├── web/
+│   ├── login.jsp
+│   ├── search.jsp
+│   ├── cart.jsp
+│   ├── createAccount.jsp
+│   ├── ...
+│
+├── WEB-INF/
+│   ├── web.xml
 ```
 
----
+## 🚀 Cách Chạy Dự Án
 
-## 🔧 Công nghệ sử dụng
+1. Mở project trong IDE hỗ trợ Java Servlet như **NetBeans** hoặc **Eclipse**.
+2. Cấu hình server (Tomcat hoặc GlassFish).
+3. Import database (file script SQL nếu có).
+4. Build và deploy ứng dụng.
+5. Truy cập đường dẫn: `http://localhost:8080/[project-name]/`
 
-- **Java Servlet 3.1**
-- **JSP - JSTL**
-- **JDBC - Kết nối CSDL**
-- **HTML/CSS đơn giản**
-- **Apache Tomcat Server**
-- **MVC2 Pattern**
-- **Session, Cookies, Hidden Fields**
+## 🛠 Công Nghệ Sử Dụng
 
----
+- Java Servlet
+- JSP
+- JDBC
+- MVC2 Pattern
+- Filter (Front Controller)
+- Apache Tomcat / GlassFish
+- MySQL (hoặc SQL Server)
 
-## 💡 Mô hình hoạt động (MVC2)
+## 🔐 Các Chức Năng Chính
 
-- **Model**:  
-  `RegistrationDAO`, `RegistrationDTO`, `DBHelper` xử lý logic và tương tác cơ sở dữ liệu.
+| Chức năng                | Mô tả                                                                 |
+|--------------------------|------------------------------------------------------------------------|
+| Đăng nhập                | Xác thực tài khoản từ cơ sở dữ liệu                                    |
+| Tạo tài khoản            | Thêm tài khoản mới với kiểm tra lỗi đầu vào                            |
+| Tìm kiếm theo họ         | Truy vấn danh sách người dùng từ họ tên                                |
+| Thêm vào giỏ hàng        | Lưu sản phẩm vào session giỏ hàng                                      |
+| Xem / Xóa giỏ hàng       | Hiển thị danh sách và xóa từng sản phẩm khỏi giỏ                       |
+| Tính tổng tiền           | Tính tổng đơn hàng trong giỏ                                           |
+| Tìm kiếm sản phẩm        | Lọc sản phẩm theo tên                                                  |
+| Cập nhật tài khoản       | Cập nhật thông tin người dùng                                          |
+| Xóa tài khoản            | Xóa người dùng khỏi hệ thống                                           |
+| Đăng xuất                | Xóa session và chuyển về trang đăng nhập                               |
 
-- **View**:  
-  Các file `.jsp`, `.html` hiển thị giao diện người dùng.
+## 🧪 Kiểm Thử
 
-- **Controller**:  
-  Các Servlet đóng vai trò điều hướng, xử lý nghiệp vụ:
-  - `DispatchServlet` là trung tâm điều phối yêu cầu
-  - Các Servlet chuyên biệt: `LoginServlet`, `CreateAccountServlet`, `UpdateAccountServlet`, v.v...
+- Đăng nhập: sử dụng các tài khoản đã có trong database
+- Thêm sản phẩm: chọn sản phẩm và bấm "Add"
+- Kiểm tra giỏ hàng: vào trang `cart.jsp`
+- Thử xóa sản phẩm, đăng xuất, tạo account mới để xác minh hoạt động
 
----
+## 📌 Ghi Chú
 
-## 🚀 Hướng dẫn triển khai
+- **FilterDispatcher.java** đóng vai trò điều hướng trung tâm (Front Controller).
+- **DispatchServlet.java** định tuyến đến các Servlet Controller cụ thể dựa trên tham số `btAction`.
+- **Session** được dùng để lưu trạng thái người dùng và giỏ hàng.
 
-1. Cài đặt **JDK**, **Apache Tomcat**
-2. Cấu hình Database (tùy theo yêu cầu, cấu trúc bảng do bạn định nghĩa)
-3. Import project vào IDE (NetBeans, Eclipse,...)
-4. Build và Deploy project
-5. Truy cập:  
-   `http://localhost:8080/YourAppContext/`
+## 📄 License
 
----
+Dự án này phục vụ cho mục đích học tập. Bạn được phép sao chép, chỉnh sửa và sử dụng lại trong các project cá nhân.
 
-## ⚙️ Các tính năng chính
-
-- **Đăng nhập (`login.html`)**  
-  Người dùng nhập tài khoản, mật khẩu, được kiểm tra qua `CheckAccountServlet`.
-
-- **Đăng ký tài khoản (`createAccount.html` / `createAccount.jsp`)**  
-  Xử lý bởi `CreateAccountServlet`, kiểm tra ràng buộc dữ liệu.
-
-- **Tìm kiếm tài khoản (`search.html` / `search.jsp`)**  
-  Tra cứu theo Lastname, hiển thị bảng dữ liệu, có nút Delete, Update từng dòng.
-
-- **Xóa tài khoản (`DeleteAccountServlet`)**
-
-- **Cập nhật thông tin (`UpdateAccountServlet`)**
-
-- **Quản lý Session, Cookies**  
-  Lưu thông tin đăng nhập để tránh login lại nhiều lần.
-
-- **Xử lý lỗi**  
-  - Sai tài khoản: `invalid.html`  
-  - Lỗi hệ thống: `error.html`  
-
----
-
-## 📁 Cấu hình `web.xml` mẫu
-
-```xml
-<servlet>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>tuonglh.controller.LoginServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/LoginServlet</url-pattern>
-</servlet-mapping>
-
-<welcome-file-list>
-    <welcome-file>DispatchServlet</welcome-file>
-</welcome-file-list>
-
-<session-config>
-    <session-timeout>30</session-timeout>
-</session-config>
-```
-
----
-
-## 🎯 Mục tiêu học tập
-
-✅ Hiểu rõ mô hình **MVC2**, phân tách rõ ràng View - Controller - Model  
-✅ Thành thạo thao tác Servlet, JSP, JDBC  
-✅ Triển khai các kỹ thuật quản lý Session, Cookies, Error Handling  
-✅ Hiểu luồng hoạt động từ client gửi request đến server xử lý trả về giao diện  
-✅ Chuẩn bị nền tảng cho các dự án nâng cao về Web Application  
