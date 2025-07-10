@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -61,8 +62,8 @@ public class CheckAccountServlet extends HttpServlet {
             }
         }catch(SQLException ex){
             log("SQL: " + ex.getMessage());
-        }catch(ClassNotFoundException ex){
-            log("Class Not Found :"+ ex.getMessage());
+        }catch(NamingException ex){
+            log("NamingException :"+ ex.getMessage());
         }
         finally {
             response.sendRedirect(url); // khi server stateless voi browser thi file cookie van con nen dung dispatcher cung duoc 

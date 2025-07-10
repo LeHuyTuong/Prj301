@@ -12,7 +12,7 @@
         <title>JSP Calculator</title>
     </head>
     <body>
-        <form action="DispatchServlet">
+        <form action="caculator">
             Number 1 <input type="text" name="txtNum1" value="" /> </br>
             Number 2 <input type="text" name="txtNum2" value="" /> </br>
             <input type="submit" value="Caculator" name="btAction" />

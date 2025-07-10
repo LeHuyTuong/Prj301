@@ -26,11 +26,11 @@
         <font color = "red">
         Welcome , ${sessionScope.USER_INFO.name}
         </font>
-        <form action="DispatchServlet">
+        <form action="logoutAccount">
             <input class="logout" type="submit" value="Logout" name="btAction" />
         </form>
         <h1>Search Page</h1>
-        <form action="DispatchServlet">
+        <form action="searchLastname">
             Search Value <input type="text" name="txtSearchValue" 
                                 value="${param.txtSearchValue}" /></br>
             <input type="submit" value="Search" name="btAction" />
@@ -54,7 +54,7 @@
                     </thead>
                     <tbody>
                         <c:forEach var="dto" items="${result}" varStatus="counter">
-                        <form  action="DispatchServlet" method="POST">
+                        <form  action="updateAccount" method="POST">
                             <tr>
                                 <td>
                                     ${counter.count}
@@ -79,7 +79,7 @@
                                     />
                                 </td>
                                 <td>
-                                    <c:url var="deleteLink" value="DispatchServlet">
+                                    <c:url var="deleteLink" value="delete">
                                         <c:param name="btAction" value="Delete" />
                                         <c:param name="pk" value="${dto.phoneNumber}" />
                                         <c:param name="lastSearchValue"

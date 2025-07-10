@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import javax.naming.NamingException;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -58,8 +59,8 @@ public class SearchLastnameServlet extends HttpServlet {
             }
         }catch(SQLException ex){
             log("SQL :" + ex.getMessage());
-        }catch(ClassNotFoundException ex){
-            log("Class Not Found : " + ex.getMessage());
+        }catch(NamingException ex){
+            log("NamingException : " + ex.getMessage());
         }
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

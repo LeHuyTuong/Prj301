@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import tuonglh.registration.SigninDAO;
 
 /**
@@ -45,14 +46,13 @@ public class DeleteServlet extends HttpServlet {
             //2.2 Call method from DAO Object
             boolean result = dao.deleteValue(phoneNumber);
             if(result == true){
-                 url = "DispatchServlet"
-                    + "?btAction=Search"
+                 url = "searchLastname?"
                     + "&txtSearchValue=" + searchValue; 
             }
         }catch(SQLException ex){
             log("SQL Exception" + ex.getMessage());
-        }catch(ClassNotFoundException ex){
-            log("File Not Found " + ex.getMessage());
+        }catch(NamingException ex){
+            log("NamingException " + ex.getMessage());
         }
         finally{
             response.sendRedirect(url);

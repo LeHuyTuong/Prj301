@@ -15,7 +15,7 @@
     </head>
     <body>
         <h1>Create new Account</h1>
-        <form action="DispatchServlet" method="POST">
+        <form action="createAccount" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERRORS}" />
             PhoneNumber* <input type="text" name="txtPhoneNumber" value="${param.txtPhoneNumber}" /><br/>
             <c:if test="${not empty errors.phoneNumberNotFormat}">

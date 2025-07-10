@@ -32,6 +32,7 @@ public class DispatchServlet extends HttpServlet {
     private final  String ADD_TO_CART_CONTROLLER ="AddToCartServlet";
     private final  String REMOVE_ITEM_CART_CONTROLLER = "RemoveItemCartServlet";
     private final String View_CART_PAGE = "viewCart.jsp";
+    private final String SEARCH_ITEM_CONTROLLER = "SearchItemServlet";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -83,6 +84,9 @@ public class DispatchServlet extends HttpServlet {
                         break;
                     case "Remove":
                         url = REMOVE_ITEM_CART_CONTROLLER;
+                        break;
+                    case "SearchItem":
+                        url = SEARCH_ITEM_CONTROLLER;
                         break;
                     default:
                         throw new AssertionError();

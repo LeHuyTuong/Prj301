@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
 import tuonglh.utils.DBHelper;
 
 /**
@@ -20,7 +21,7 @@ import tuonglh.utils.DBHelper;
 public class SigninDAO implements Serializable {
 
     public SigninDTO checkLogin(String phoneNumber, String password)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         SigninDTO result = null;
         Connection con = null;
         PreparedStatement stm = null;
@@ -70,7 +71,7 @@ public class SigninDAO implements Serializable {
     }
 
     public void searchLastName(String searchValue)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -123,7 +124,7 @@ public class SigninDAO implements Serializable {
     }
 
     public boolean deleteValue(String phoneNumber)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         boolean result = false;
         Connection con = null;
         PreparedStatement stm = null;
@@ -160,7 +161,7 @@ public class SigninDAO implements Serializable {
     }
 
     public boolean updateAccount(String phone, String password, String role)
-            throws SQLException, ClassNotFoundException {
+            throws SQLException, NamingException {
         boolean result = false;
         Connection con = null;
         PreparedStatement stm = null;
@@ -205,7 +206,7 @@ public class SigninDAO implements Serializable {
         return result;
     }
     
-    public boolean createAccount(SigninDTO accounts) throws SQLException, ClassNotFoundException {
+    public boolean createAccount(SigninDTO accounts) throws SQLException, NamingException {
         boolean result = false;
         Connection con = null;
         PreparedStatement stm = null;

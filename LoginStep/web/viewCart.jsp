@@ -1,4 +1,4 @@
-<%-- 
+ <%-- 
     Document   : viewCart
     Created on : Jul 6, 2025, 5:53:46 PM
     Author     : USER
@@ -16,7 +16,7 @@
         <h1>Your cart include</h1>
         <c:set var="cart" value="${sessionScope.CART}"/>
         <c:if test="${not empty cart and not empty cart.items}" >
-            <form action="DispatchServlet" method="POST">
+            <form action="removeItemCart" method="POST">
 
                 <table border="1">
                     <thead>

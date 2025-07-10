@@ -13,20 +13,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.List;
 import javax.naming.NamingException;
-import tuonglh.registration.SigninCreateError;
-import tuonglh.registration.SigninDAO;
-import tuonglh.registration.SigninDTO;
+import tuonglh.registration.ItemDAO;
+import tuonglh.registration.ItemDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "CreateAccountServlet", urlPatterns = {"/CreateAccountServlet"})
-public class CreateAccountServlet extends HttpServlet {
+@WebServlet(name = "SearchItemServlet", urlPatterns = {"/SearchItemServlet"})
+public class SearchItemServlet extends HttpServlet {
 
-    private final String CREATE_PAGE = "createAccount.jsp";
-    private final String LOGIN_PAGE = "login.html";
+    private final String SHOP_PAGE = "onlineShopping";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,58 +39,21 @@ public class CreateAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //b1 get all User info 
-        String phoneNumber = request.getParameter("txtPhoneNumber");
-        String password = request.getParameter("txtPassword");
-        String confirm = request.getParameter("txtConfirm");
-        String fullName = request.getParameter("txtFullName");
-        String url = CREATE_PAGE;
-
-        SigninCreateError errors = new SigninCreateError(); // khai bao cho de loi 
-        boolean foundErr = false;
-
+        String searchValue = request.getParameter("txtSearchItem");
+        String url = SHOP_PAGE;
         try {
-            if (phoneNumber.trim().length() != 10) {
-                foundErr = true;
-                errors.setPhoneNumberNotFormat(
-                        "Phone Number is requestment type 10 number");
-            }
-            if (password.trim().length() < 8 || password.trim().length() > 40) {
-                foundErr = true;
-                errors.setPasswordNotLengthErr(
-                        "Password is requestment type more than 8 end less than 40");
-            } else if (!confirm.trim().equals(password.trim())) {
-                foundErr = true;
-                errors.setConfirmNotMatch("Confirm not match Password");
-            }
-            if (fullName.trim().length() < 8 || fullName.trim().length() > 40) {
-                foundErr = true;
-                errors.setFullNameNotLengthErr(
-                         "FullName is requestment type more than 8 end less than 40");
-            }
-            if (foundErr == true) {
-                request.setAttribute("CREATE_ERRORS", errors);
-            } else {
-                //2 call method from dao object 
-                //2.1 call dao
-                SigninDAO dao = new SigninDAO();
-                //2.2 call method
-                SigninDTO accounts = new SigninDTO(phoneNumber, password, false, fullName);
-                boolean result = dao.createAccount(accounts);
-                //3 process
-                if (result) {
-                    url = LOGIN_PAGE;
-                }// user is exist
+            if (!searchValue.isEmpty()) {
+                ItemDAO dao = new ItemDAO();
+                dao.searchItems(searchValue);
+                List<ItemDTO> result = dao.getItems();
+                request.setAttribute("ITEM_VALUE", result);
+                url = SHOP_PAGE;
+
             }
         } catch (SQLException ex) {
-            String msg = ex.getMessage();
-            log("SQL " + msg);
-            if(msg.contains("duplicate")){
-                errors.setPhoneNumberIsExist(phoneNumber + "duplicate");
-                request.setAttribute("CREATE_ERRORS", errors);
-            }
+            log("SQL :" + ex.getMessage());
         } catch (NamingException ex) {
-            log("NamingException " + ex.getMessage());
+            log("NamingException: " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

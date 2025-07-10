@@ -43,7 +43,7 @@ public class RemoveItemCartServlet extends HttpServlet {
                 cart.removeItemFromCart(items);
             }
             session.setAttribute("CART", cart);
-            url ="DispatchServlet"
+            url ="cart"
                     + "?btAction=View your cart"
                     + "&cboBook=Java";
         }

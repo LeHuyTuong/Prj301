@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -61,8 +62,8 @@ public class LoginServlet extends HttpServlet {
                 } 
         } catch (SQLException ex) {
             log("SQL :" + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            log("Class Not Found : " + ex.getMessage());
+        } catch (NamingException ex) {
+            log("Naming : " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
