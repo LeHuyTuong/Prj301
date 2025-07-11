@@ -5,6 +5,7 @@
 package tuonglh.registration;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  *
@@ -14,14 +15,15 @@ public class ItemDTO implements Serializable{
     private String itemID;
     private double price;
     private String name;
-
+    private Timestamp dateTime;
     public ItemDTO() {
     }
 
-    public ItemDTO(String itemID, double price, String name) {
+    public ItemDTO(String itemID, double price, String name, Timestamp dateTime) {
         this.itemID = itemID;
         this.price = price;
         this.name = name;
+        this.dateTime = dateTime;
     }
 
     /**
@@ -66,6 +68,21 @@ public class ItemDTO implements Serializable{
         this.name = name;
     }
 
+    /**
+     * @return the dateTime
+     */
+    public Timestamp getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * @param dateTime the dateTime to set
+     */
+    public void setDateTime(Timestamp dateTime) {
+        this.dateTime = dateTime;
+    }
+
+   
     
     
 }

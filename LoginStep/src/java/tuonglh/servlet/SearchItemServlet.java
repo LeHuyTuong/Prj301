@@ -25,7 +25,7 @@ import tuonglh.registration.ItemDTO;
 @WebServlet(name = "SearchItemServlet", urlPatterns = {"/SearchItemServlet"})
 public class SearchItemServlet extends HttpServlet {
 
-    private final String SHOP_PAGE = "onlineShopping";
+    private final String SHOP_PAGE = "onlineShopping.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,9 +46,9 @@ public class SearchItemServlet extends HttpServlet {
                 ItemDAO dao = new ItemDAO();
                 dao.searchItems(searchValue);
                 List<ItemDTO> result = dao.getItems();
+                System.out.println(result);
                 request.setAttribute("ITEM_VALUE", result);
                 url = SHOP_PAGE;
-
             }
         } catch (SQLException ex) {
             log("SQL :" + ex.getMessage());

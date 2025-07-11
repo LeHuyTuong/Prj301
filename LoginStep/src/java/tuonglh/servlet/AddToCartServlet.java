@@ -5,6 +5,7 @@
 
 package tuonglh.servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +14,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import javax.naming.NamingException;
 import tuonglh.cart.CartObject;
+import tuonglh.registration.ItemDAO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name="AddToCartServlet", urlPatterns={"/AddToCartServlet"})
+@WebServlet(name="AddToCartServlet", urlPatterns={"/AddToCartServlet" ,"/cart"})
 public class AddToCartServlet extends HttpServlet {
-   private final String SHOPPING_PAGE ="onlineShopping.html";
+   private final String SHOPPING_PAGE ="onlineShopping.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,6 +37,7 @@ public class AddToCartServlet extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = SHOPPING_PAGE;
+        String searchValue = request.getParameter("lastSearchValue");
         try  {
             //1 Customer goes to cart place
             HttpSession session = request.getSession();
@@ -42,13 +47,24 @@ public class AddToCartServlet extends HttpServlet {
                 cart = new CartObject();
             }
             //3 customer takes items 
-            String id = request.getParameter("cboBook");
+            String id = request.getParameter("itemID");
             //4 Customer drops items to cart 
-            cart.addItemToCart(id);
+            ItemDAO dao = new ItemDAO();
+            String name = dao.getNameByID(id);
+            cart.addItemToCart(id,name);
             session.setAttribute("CART", cart);
-            
+            url = "cart"
+                    + "?txtSearchItem=" + searchValue
+                    + "&btAction=Search+Item";
             //5 redirect to online shopping page
-        }finally{ 
+        }
+        catch(SQLException ex){
+            log("SQL" + ex.getMessage());
+        } 
+        catch(NamingException ex){
+            log("Naming " + ex.getMessage());
+        }
+        finally{ 
             response.sendRedirect(url);
         }
     } 

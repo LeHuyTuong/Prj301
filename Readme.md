@@ -103,4 +103,7 @@ Chức năng chính:
 ## 📄 License
 
 Dự án này phục vụ cho mục đích học tập. Bạn được phép sao chép, chỉnh sửa và sử dụng lại trong các project cá nhân.
+<<<<<<< HEAD
 
+=======
+>>>>>>> f157837 (Done add to cart and online shopping)

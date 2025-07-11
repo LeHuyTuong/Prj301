@@ -1,63 +1,60 @@
-<%-- 
-    Document   : onlineShopping
-    Created on : Jul 8, 2025, 6:21:01 PM
-    Author     : USER
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <meta charset="UTF-8">
+        <title>Book Store</title>
     </head>
     <body>
         <h1>Book Store</h1>
-        <form action="searchItem">
-            SearchName <input type="text" name="txtSearchItem" value="${param.txtSearchItem}" />
-            <input type="submit" value="SearchItem" name="btAction" />
+
+        <form action="cart">
+            Search Name: <input type="text" name="txtSearchItem" value="${param.txtSearchItem}" />
+            <input type="submit" value="Search Item" name="btAction" />
         </form>
-        <c:set var="searchItem" value="${param.txtSearchItem}" />
-        <c:if test="${not empty searchItem}" >
+
+        <form action="cart" style="margin-top: 20px;">
+            <input type="submit" value="View your cart" name="btAction" />
+        </form>    
+        <c:if test="${not empty param.txtSearchItem}">
             <c:set var="items" value="${requestScope.ITEM_VALUE}" />
-            <c:if test="${not empty items}" >
-                <table border="1">
+
+            <c:if test="${not empty items}">
+                <table border="1" cellpadding="5" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ItemID</th>
+                            <th>Item ID</th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Action</th>
+                            <th>Add to cart</th>
                         </tr>
                     </thead>
-                    <c:forEach var="dto" items="${items}" varStatus="counter" >
-                        <tbody>
+                    <tbody>
+                        <c:forEach var="dto" items="${items}">
+                        <form action="cart" method="post" style="display:inline;">
                             <tr>
+                                <td>${dto.itemID}</td>
+                                <td>${dto.name}</td>
+                                <td>${dto.price}</td>
+                                <td>${dto.dateTime}</td>
                                 <td>
-                                    ${dto.itemID}
-                                </td>
-                                <td>
-                                    ${dto.name}
-                                </td>
-                                <td>
-                                    ${dto.price}
+                                    <input type="hidden" name="lastSearchValue" value="${param.txtSearchItem}" />
+                                    <input type="hidden" name="itemID" value="${dto.itemID}" />
+                                    <input type="submit" value="Add to Cart" name="btAction" />
                                 </td>
                             </tr>
-                        </tbody>
+                        </form>
                     </c:forEach>
-                </table>
-
-                <form action="DispatchServlet">
-                    Choose your items<select name="cboBook">
-
-                    </select><br/>
-                    <input type="submit" value="Add item to cart" name="btAction" />
-                    <input type="submit" value="View your cart" name="btAction" />
-                </form>
-            </c:if>
-            <c:if test="${empty items}" >
-                No recording
-            </c:if>
+                </tbody>
+            </table>
         </c:if>
-    </body>
+
+        <c:if test="${empty items}">
+            <p>No matching items found.</p>
+        </c:if>
+
+    </c:if>
+</body>
 </html>

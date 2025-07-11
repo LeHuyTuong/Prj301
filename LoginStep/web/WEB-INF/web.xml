@@ -2,7 +2,7 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>FilterDispatcher</filter-name>
-        <filter-class>pe.fillter.FilterDispatcher</filter-class>
+        <filter-class>tuonglh.fillter.FilterDispatcher</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>FilterDispatcher</filter-name>
@@ -24,9 +24,10 @@
     <!-- <welcome-file-list>
         <welcome-file>DispatchServlet</welcome-file>
     </welcome-file-list> -->//contextPath
+
     <resource-ref>
-        <res-ref-name>LoginStep</res-ref-name>  
-        <res-type> jarkata.sql.DataSource</res-type>
+        <res-ref-name>LoginStep</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>

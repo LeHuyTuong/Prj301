@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public class CartObject implements Serializable {
 
-    private Map<String, Integer> items;
+    private Map<String, String> items;
 
-    public Map<String, Integer> getItems() {
+    public Map<String, String> getItems() {
         return items;
     }
 
-    public void addItemToCart(String id) {
+    public void addItemToCart(String id, String name) {
         //1. check items's id is existed 
         if (id == null) {
             return;
@@ -34,14 +34,13 @@ public class CartObject implements Serializable {
             this.items = new HashMap<>();
         }
         //3 when items has existed checking existed id
-        int quantity = 1;
-        if (this.items.containsKey(id)) {
-            quantity = this.items.get(id) + 1;
-        }
+//        int quantity = 1;
+//        if (this.items.containsKey(id)) {
+//            quantity = this.items.get(id) + 1;
+//        }
 
         //4 update items
-        this.items.put(id, quantity);
-
+        this.items.put(id, name);
     }
 
     public void removeItemFromCart(String id) {
