@@ -1,109 +1,93 @@
+# Online Book Store Web Application
 
-# Java Web CRUD Application - MVC2 Pattern
+## Overview
+This is a web-based project simulating an online bookstore using **Java Servlet**, **JSP**, **JavaBeans**, **JSTL**, and **MVC2** architecture. It demonstrates how to build a CRUD application with shopping cart functionality while applying key concepts such as **session tracking**, **filter chains**, **JavaBeans**, **custom tag libraries**, and **MVC separation**.
 
-## 🧩 Mô tả Dự Án
+---
 
-Đây là một ứng dụng web đơn giản được xây dựng bằng **Java Servlet** theo mô hình **MVC2**, nhằm mục tiêu minh họa cách hoạt động của các thành phần như:
-- **Servlets** (Controller)
-- **Java Beans / DTO / DAO** (Model)
-- **JSP** (View)
-- **Filter** (Front Controller Pattern)
+## Features
 
-Chức năng chính:
-- Đăng ký, đăng nhập và đăng xuất tài khoản
-- Tìm kiếm người dùng theo họ
-- Tìm kiếm mặt hàng
-- Thêm, xóa sản phẩm khỏi giỏ hàng
-- Tính tổng tiền trong giỏ hàng
+### ✅ User Account Management
+- **Login / Logout** (with cookies or session)
+- **Register** new account (`CreateAccountServlet`)
+- **Update** and **delete** account info (`UpdateAccountServlet`, `DeleteServlet`)
 
-## 📁 Cấu Trúc Thư Mục
+### 🔍 Search
+- Search users by last name (`SearchLastnameServlet`)
+- Search books/items (`SearchItemServlet`)
 
-```
-├── src/
-│   ├── controller/
-│   │   ├── FilterDispatcher.java
-│   │   ├── DispatchServlet.java
-│   │   ├── CreateAccountServlet.java
-│   │   ├── CheckAccountServlet.java
-│   │   ├── LogoutAccountServlet.java
-│   │   ├── AddToCartServlet.java
-│   │   ├── RemoveItemCartServlet.java
-│   │   ├── CartServlet.java
-│   │   ├── CaculatorServlet.java
-│   │   ├── DeleteServlet.java
-│   │   ├── SearchLastnameServlet.java
-│   │   ├── SearchItemServlet.java
-│   │   ├── UpdateAccountServlet.java
-│   ├── model/
-│   │   ├── SigninDAO.java
-│   │   ├── SigninDTO.java
-│   │   ├── SigninCreateError.java
-│   │   ├── ItemDAO.java
-│   │   ├── ItemDTO.java
-│   │   ├── CartObject.java
-│   ├── utils/
-│   │   ├── DBHelper.java
-├── web/
-│   ├── login.jsp
-│   ├── search.jsp
-│   ├── cart.jsp
-│   ├── createAccount.jsp
-│   ├── ...
-│
-├── WEB-INF/
-│   ├── web.xml
-```
+### 🛒 Shopping Cart
+- Add items to cart (`AddToCartServlet`)
+- View cart and update quantity (`CartServlet`, `CaculatorServlet`)
+- Remove items from cart (`RemoveItemCartServlet`)
 
-## 🚀 Cách Chạy Dự Án
+### ✨ Filter-based Controller (MVC2 Pattern)
+- Uses `FilterDispatcher` to route all requests
+- Acts as the **Controller** of the MVC2 architecture
 
-1. Mở project trong IDE hỗ trợ Java Servlet như **NetBeans** hoặc **Eclipse**.
-2. Cấu hình server (Tomcat hoặc GlassFish).
-3. Import database (file script SQL nếu có).
-4. Build và deploy ứng dụng.
-5. Truy cập đường dẫn: `http://localhost:8080/[project-name]/`
+---
 
-## 🛠 Công Nghệ Sử Dụng
+## Technologies Used
+- **Java Servlet & JSP**
+- **JavaBeans** for DTO (e.g., `ItemDTO`, `SigninDTO`) and DAO (e.g., `ItemDAO`, `SigninDAO`)
+- **Session Tracking** via `HttpSession` and cookies
+- **JSTL** for view logic
+- **Custom Tag Library** (via `.tld`) to abstract repetitive view logic
+- **Filter API** for request interception and dispatching
 
-- Java Servlet
-- JSP
-- JDBC
-- MVC2 Pattern
-- Filter (Front Controller)
-- Apache Tomcat / GlassFish
-- MySQL (hoặc SQL Server)
+---
 
-## 🔐 Các Chức Năng Chính
+## Architecture
 
-| Chức năng                | Mô tả                                                                 |
-|--------------------------|------------------------------------------------------------------------|
-| Đăng nhập                | Xác thực tài khoản từ cơ sở dữ liệu                                    |
-| Tạo tài khoản            | Thêm tài khoản mới với kiểm tra lỗi đầu vào                            |
-| Tìm kiếm theo họ         | Truy vấn danh sách người dùng từ họ tên                                |
-| Thêm vào giỏ hàng        | Lưu sản phẩm vào session giỏ hàng                                      |
-| Xem / Xóa giỏ hàng       | Hiển thị danh sách và xóa từng sản phẩm khỏi giỏ                       |
-| Tính tổng tiền           | Tính tổng đơn hàng trong giỏ                                           |
-| Tìm kiếm sản phẩm        | Lọc sản phẩm theo tên                                                  |
-| Cập nhật tài khoản       | Cập nhật thông tin người dùng                                          |
-| Xóa tài khoản            | Xóa người dùng khỏi hệ thống                                           |
-| Đăng xuất                | Xóa session và chuyển về trang đăng nhập                               |
+### MVC2 with Filter as Controller
+- **Model**: JavaBeans (DTO/DAO)
+- **View**: JSP with JSTL/EL, taglibs
+- **Controller**: `FilterDispatcher.java` intercepts all requests and dispatches to appropriate Servlets
+---
 
-## 🧪 Kiểm Thử
+## Key Java Files
+- `FilterDispatcher.java`: routes requests based on URI suffix (e.g. `action=Search` dispatches to `SearchItemServlet`)
+- `DispatchServlet.java`: legacy front controller
+- `AddToCartServlet.java`, `CartServlet.java`: manage cart flow
+- `SigninDAO.java`, `ItemDAO.java`: JDBC logic for users and items
 
-- Đăng nhập: sử dụng các tài khoản đã có trong database
-- Thêm sản phẩm: chọn sản phẩm và bấm "Add"
-- Kiểm tra giỏ hàng: vào trang `cart.jsp`
-- Thử xóa sản phẩm, đăng xuất, tạo account mới để xác minh hoạt động
+---
 
-## 📌 Ghi Chú
+## Learning Topics
 
-- **FilterDispatcher.java** đóng vai trò điều hướng trung tâm (Front Controller).
-- **DispatchServlet.java** định tuyến đến các Servlet Controller cụ thể dựa trên tham số `btAction`.
-- **Session** được dùng để lưu trạng thái người dùng và giỏ hàng.
+### 1. Filters
+- Centralized control logic
+- Chain multiple filters if needed (`FilterChain`)
+- Acts before Servlet logic (authentication, logging, etc.)
 
-## 📄 License
+### 2. Sessions
+- Cart is session-based (stored in `HttpSession`)
+- Uses `CartObject.java` as a holder bean for cart items
 
-Dự án này phục vụ cho mục đích học tập. Bạn được phép sao chép, chỉnh sửa và sử dụng lại trong các project cá nhân.
-<<<<<<< HEAD
+### 3. JavaBeans
+- Each data object (`SigninDTO`, `ItemDTO`) encapsulates properties with getters/setters
+- DAO classes isolate JDBC logic
 
-=======
->>>>>>> f157837 (Done add to cart and online shopping)
+### 4. JSTL + EL
+- View logic separated from business logic
+- No Java code inside JSPs
+
+---
+
+## Deployment Instructions
+1. Deploy on **Apache Tomcat 7+**
+2. Place project inside `webapps` directory
+3. Create MySQL database and configure `DBHelper.java`
+4. Open browser at `http://localhost:8080/YourProjectName`
+
+---
+
+## Credits
+- Code and materials based on lectures by **Kieu Trong Khanh**
+- Sample project for academic purposes
+
+
+---
+
+## License
+This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for more details.
