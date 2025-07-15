@@ -109,11 +109,11 @@ public class FilterDispatcher implements Filter {
 
         Throwable problem = null;
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        String uri = req.getRequestURI();
+        HttpServletRequest req = (HttpServletRequest) request;   // get 
+        String uri = req.getRequestURI(); // get url tu client LoginStep/login.jsp 
         String url = loginPage;
         try {
-            int lastIndex = uri.lastIndexOf("/");
+            int lastIndex = uri.lastIndexOf("/");   // get index login.jsp
             String resource = uri.substring(lastIndex + 1);
             if (resource.length() > 0) {
                 url = resource.substring(0, 1).toUpperCase()
@@ -125,7 +125,7 @@ public class FilterDispatcher implements Filter {
             }
             if (url != null) {
                 RequestDispatcher rd = req.getRequestDispatcher(url);
-                rd.forward(request, response);
+                rd.forward(request, response); // no url go to maincontroller 
             } else {
                 chain.doFilter(request, response);
             }

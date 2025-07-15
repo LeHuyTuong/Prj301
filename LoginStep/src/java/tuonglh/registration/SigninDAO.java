@@ -138,7 +138,7 @@ public class SigninDAO implements Serializable {
                         + "From Signin "
                         + "Where phoneNumber = ?";
                 //2.2 Create  Statement Object
-
+                
                 stm = con.prepareStatement(sql);
                 stm.setString(1, phoneNumber);   // chi co 1 tham chieu
                 //4.Execute Query
@@ -175,7 +175,7 @@ public class SigninDAO implements Serializable {
                         + "Set password = ? ,"
                         + "role = ? "
                         + "Where phoneNumber = ?";
-
+                      
                 //2.2 Set statement vao query
                 stm = con.prepareStatement(query);
                 stm.setString(1, password);
@@ -220,7 +220,7 @@ public class SigninDAO implements Serializable {
                         + "phoneNumber, password, role, name"
                         + ") Values ("
                         + "?, ?, ?, ?)";
-
+                
                 //2.2 Set statement vao query
                 stm = con.prepareStatement(query);
                 stm.setString(1, accounts.getPhoneNumber());
