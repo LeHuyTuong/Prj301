@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import tuonglh.cart.CartObject;
-import tuonglh.registration.ItemDAO;
+import tuonglh.item.ItemDAO;
 
 /**
  *

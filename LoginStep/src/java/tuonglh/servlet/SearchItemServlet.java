@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
-import tuonglh.registration.ItemDAO;
-import tuonglh.registration.ItemDTO;
+import tuonglh.item.ItemDAO;
+import tuonglh.item.ItemDTO;
 
 /**
  *
