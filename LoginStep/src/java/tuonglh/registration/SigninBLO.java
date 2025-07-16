@@ -126,7 +126,7 @@ public class SigninBLO implements SigninBLI{
     }
 
     @Override
-    public boolean createAccount(SigninDTO accounts) {
+    public boolean createAccount(Signin accounts) {
         boolean result = false;
         EntityManager em = emf.createEntityManager();
         try{

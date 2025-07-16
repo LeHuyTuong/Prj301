@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +37,11 @@ public class LogoutAccountServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if(session != null){
                 session.invalidate();
+            }
+            Cookie[] cookies = request.getCookies();
+            for(Cookie c :cookies){
+                c.setMaxAge(0);
+                response.addCookie(c);
             }
             url = LOGIN_PAGE;
         }finally{

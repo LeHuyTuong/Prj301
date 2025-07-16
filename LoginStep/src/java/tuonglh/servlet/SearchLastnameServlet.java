@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
+import tuonglh.registration.Signin;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -46,21 +49,21 @@ public class SearchLastnameServlet extends HttpServlet {
                 // ko empty trim 
                 //2 Controller call method of Model 
                 //2.1 New DAO Object 
-                    SigninDAO dao = new SigninDAO();
+                    SigninBLI blo = new SigninBLO();
                     
                 //2.2 Call Method of DAO Object
-                    dao.searchLastName(searchValue);
+                List<Signin> result =  blo.searchLastName(searchValue);
                 //3.Get du lieu tu method 
-                List<SigninDTO> result = dao.getAccounts();
+//                List<SigninDTO> result = blo.getAccounts();
                 url = SEARCH_RESULT;
                 
                 // gio thi da co thong tin roi muon set attribute de hien thi view thi  se setAttri vao jsp
                 request.setAttribute("SEARCH_RESULT", result);
             }
-        }catch(SQLException ex){
-            log("SQL :" + ex.getMessage());
-        }catch(NamingException ex){
-            log("NamingException : " + ex.getMessage());
+//        }catch(SQLException ex){
+//            log("SQL :" + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException : " + ex.getMessage());
         }
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

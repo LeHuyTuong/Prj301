@@ -18,7 +18,7 @@ public class SigninCreateError implements Serializable{
     private String confirmNotMatch;
     private String fullNameNotLengthErr;
     private String phoneNumberIsExist;
-
+    private String adminCannotBeDelete;
     public SigninCreateError() {
     }
 
@@ -90,6 +90,20 @@ public class SigninCreateError implements Serializable{
      */
     public void setPhoneNumberIsExist(String phoneNumberIsExist) {
         this.phoneNumberIsExist = phoneNumberIsExist;
+    }
+
+    /**
+     * @return the adminCannotBeDelete
+     */
+    public String getAdminCannotBeDelete() {
+        return adminCannotBeDelete;
+    }
+
+    /**
+     * @param adminCannotBeDelete the adminCannotBeDelete to set
+     */
+    public void setAdminCannotBeDelete(String adminCannotBeDelete) {
+        this.adminCannotBeDelete = adminCannotBeDelete;
     }
  
     

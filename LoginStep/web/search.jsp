@@ -40,6 +40,10 @@
         <c:if test="${not empty searchValue}">   
             <c:set var="result" value="${requestScope.SEARCH_RESULT}" />
             <c:if test="${not empty result}">
+                <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
+                <c:if test="${not empty errors.adminCannotBeDelete}" >
+                    ${errors.adminCannotBeDelete}
+                </c:if>
                 <table border="1">
                     <thead>
                         <tr>
@@ -82,6 +86,7 @@
                                     <c:url var="deleteLink" value="delete">
                                         <c:param name="btAction" value="Delete" />
                                         <c:param name="pk" value="${dto.phoneNumber}" />
+                                        <c:param name="isAdmin" value="${dto.role}" />
                                         <c:param name="lastSearchValue"
                                                  value="${param.txtSearchValue}" />
                                     </c:url>
