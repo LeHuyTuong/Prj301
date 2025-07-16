@@ -15,5 +15,5 @@ public interface SigninBLI {
     List<Signin> searchLastName(String searchValue);
     boolean deleteValue(String phoneNumber);
     boolean updateAccount(String phone, String password, boolean role);
-    boolean createAccount(SigninDTO accounts);
+    boolean createAccount(Signin accounts);
 }

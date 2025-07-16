@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import tuonglh.registration.Signin;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -48,22 +51,20 @@ public class CheckAccountServlet extends HttpServlet {
                 String password = recentCookie.getValue();
                 
                 //B3 call method tu DAO 
-                SigninDAO dao = new SigninDAO();
-                SigninDTO result =  dao.checkLogin(phoneNumber, password);
-                
+                SigninBLI blo = new SigninBLO();
+                //2.2 Call method of DAO Object
+                Signin result = blo.checkLogin(phoneNumber, password);
                 //B4 process
                 if(result != null){
                     //get session neu co 
                     HttpSession session = request.getSession();
                     session.setAttribute("USER_INFO", result);
-                    
-                    
                 }// set session 
             }
-        }catch(SQLException ex){
-            log("SQL: " + ex.getMessage());
-        }catch(NamingException ex){
-            log("NamingException :"+ ex.getMessage());
+//        }catch(SQLException ex){
+//            log("SQL: " + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException :"+ ex.getMessage());
         }
         finally {
             response.sendRedirect(url); // khi server stateless voi browser thi file cookie van con nen dung dispatcher cung duoc 

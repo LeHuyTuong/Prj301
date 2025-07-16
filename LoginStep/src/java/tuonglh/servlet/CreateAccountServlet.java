@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import tuonglh.registration.Signin;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
 import tuonglh.registration.SigninCreateError;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
@@ -74,24 +77,24 @@ public class CreateAccountServlet extends HttpServlet {
             } else {
                 //2 call method from dao object 
                 //2.1 call dao
-                SigninDAO dao = new SigninDAO();
+                SigninBLI blo = new SigninBLO();
                 //2.2 call method
-                SigninDTO accounts = new SigninDTO(phoneNumber, password, false, fullName);
-                boolean result = dao.createAccount(accounts);
+                Signin accounts = new Signin(phoneNumber, password, false, fullName);
+                boolean result = blo.createAccount(accounts);
                 //3 process
                 if (result) {
                     url = LOGIN_PAGE;
                 }// user is exist
             }
-        } catch (SQLException ex) {
-            String msg = ex.getMessage();
-            log("SQL " + msg);
-            if(msg.contains("duplicate")){
-                errors.setPhoneNumberIsExist(phoneNumber + "duplicate");
-                request.setAttribute("CREATE_ERRORS", errors);
-            }
-        } catch (NamingException ex) {
-            log("NamingException " + ex.getMessage());
+//        } catch (SQLException ex) {
+//            String msg = ex.getMessage();
+//            log("SQL " + msg);
+//            if(msg.contains("duplicate")){
+//                errors.setPhoneNumberIsExist(phoneNumber + "duplicate");
+//                request.setAttribute("CREATE_ERRORS", errors);
+//            }
+//        } catch (NamingException ex) {
+//            log("NamingException " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

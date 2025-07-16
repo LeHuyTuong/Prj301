@@ -4,6 +4,7 @@
  */
 package tuonglh.servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
+import tuonglh.registration.SigninCreateError;
 import tuonglh.registration.SigninDAO;
 
 /**
@@ -41,31 +45,58 @@ public class UpdateAccountServlet extends HttpServlet {
         String password = request.getParameter("txtPassword");
         String role = request.getParameter("chkRole");
         String searchValue = request.getParameter("lastSearchValue");
-        
+        SigninCreateError errors = new SigninCreateError(); // khai bao noi chua loi 
+
+        boolean foundErr = false;
+        boolean sendRedirt = false;
         String url = ERROR_PAGES;
         try {
-            //b2 call method
-            //2.1 New DAO 
-            SigninDAO dao = new SigninDAO();
+            boolean isRole = Boolean.parseBoolean(role);
+            if (role != null) {
+                isRole = true;
+            } else {
+                isRole = false;
+            }
 
-            //2.2 Call method from DAO Object 
-            boolean result = dao.updateAccount(phone, password, role);
-           // System.out.println("Bug sau result");
+            // System.out.println("Bug sau result");
             //3 Process 
-            if (result == true) {
-                url = "searchLastname?"
-                        + "&txtSearchValue=" + searchValue; // co bao nhieu input thi them bay nhieu param vao trong url 
+            if (password.trim().length() < 8
+                    || password.trim().length() > 20) {
+                foundErr = true;
+                errors.setPasswordNotLengthErr("Password is requirement typing from 8 to 20 characters");
+            }
+            if (foundErr) {
+                sendRedirt = false;
+                request.setAttribute("CREATE_ERROR", errors);
+                url = "DispatchServlet"
+                        + "?btAction=Search"
+                        + "&txtSearchValue=" + searchValue;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);   // sau khi ma da forward roi thi gui requestScope ra jsp de in error 
+            } else {
+                //b2 call method
+                //2.1 New DAO 
+                SigninBLI blo = new SigninBLO();
+
+                //2.2 Call method from DAO Object 
+                boolean result = blo.updateAccount(phone, password, isRole);
+                if (result == true) {
+                    url = "searchLastname?"
+                            + "&txtSearchValue=" + searchValue; // co bao nhieu input thi them bay nhieu param vao trong url 
+                }
+
                 //System.out.println("Bug nè nhan duoc url roi");
             }// co gia tri trong DTO 
-           //  System.out.println("ket qua result" + result);
-        }catch(SQLException ex){
-            log("SQL:" + ex.getMessage());
-        }catch(NamingException ex){
-            log("NamingException : "+ ex.getMessage());
-        }
-        finally {
-           // System.out.println("Bug nè di thoi ");
+            //  System.out.println("ket qua result" + result);
+//        }catch(SQLException ex){
+//            log("SQL:" + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException : "+ ex.getMessage());
+        } finally {
+            // System.out.println("Bug nè di thoi ");
+            if(sendRedirt){
             response.sendRedirect(url);
+            }
             //System.out.println("Bug nè di thoi ");
         }
     }

@@ -15,6 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import tuonglh.registration.Signin;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
 import tuonglh.registration.SigninDAO;
 import tuonglh.registration.SigninDTO;
 
@@ -47,9 +50,9 @@ public class LoginServlet extends HttpServlet {
         try {
                 //2. Controller call method of Model
                 //2.1 New DAO Object
-                SigninDAO dao = new SigninDAO();
+                SigninBLI blo = new SigninBLO();
                 //2.2 Call method of DAO Object
-                SigninDTO result = dao.checkLogin(phone, password);
+                Signin result = blo.checkLogin(phone, password);
                 //3. Process tra ket qua cho controller
                 if (result != null) {
                     HttpSession session = request.getSession();
@@ -60,10 +63,10 @@ public class LoginServlet extends HttpServlet {
                     cookie.setMaxAge(60 * 5);
                     response.addCookie(cookie);  // gio cookie da bao gom ben trong response khi server tra ve browser
                 } 
-        } catch (SQLException ex) {
-            log("SQL :" + ex.getMessage());
-        } catch (NamingException ex) {
-            log("Naming : " + ex.getMessage());
+//        } catch (SQLException ex) {
+//            log("SQL :" + ex.getMessage());
+//        } catch (NamingException ex) {
+//            log("Naming : " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
