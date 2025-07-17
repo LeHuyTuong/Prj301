@@ -3,29 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
-import javax.naming.NamingException;
-import tuonglh.cart.CartObject;
-import tuonglh.item.ItemDAO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name="AddToCartServlet", urlPatterns={"/AddToCartServlet" ,"/cart"})
-public class AddToCartServlet extends HttpServlet {
-   private final String SHOPPING_PAGE ="onlineShopping.jsp";
+@WebServlet(name="LogoutAccountServlet", urlPatterns={"/LogoutAccountServlet"})
+public class LogoutAccountServlet extends HttpServlet {
+    private final String LOGIN_PAGE= "login.html";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -36,35 +32,19 @@ public class AddToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SHOPPING_PAGE;
-        String searchValue = request.getParameter("lastSearchValue");
+        String url = LOGIN_PAGE;
         try  {
-            //1 Customer goes to cart place
-            HttpSession session = request.getSession();
-            //2.customer takes a cart
-            CartObject cart = (CartObject) session.getAttribute("CART");
-            if(cart == null){
-                cart = new CartObject();
+            HttpSession session = request.getSession(false);
+            if(session != null){
+                session.invalidate();
             }
-            //3 customer takes items 
-            String id = request.getParameter("itemID");
-            //4 Customer drops items to cart 
-            ItemDAO dao = new ItemDAO();
-            String name = dao.getNameByID(id);
-            cart.addItemToCart(id,name);
-            session.setAttribute("CART", cart);
-            url = "cart"
-                    + "?txtSearchItem=" + searchValue
-                    + "&btAction=Search+Item";
-            //5 redirect to online shopping page
-        }
-        catch(SQLException ex){
-            log("SQL" + ex.getMessage());
-        } 
-        catch(NamingException ex){
-            log("Naming " + ex.getMessage());
-        }
-        finally{ 
+            Cookie[] cookies = request.getCookies();
+            for(Cookie c :cookies){
+                c.setMaxAge(0);
+                response.addCookie(c);
+            }
+            url = LOGIN_PAGE;
+        }finally{
             response.sendRedirect(url);
         }
     } 

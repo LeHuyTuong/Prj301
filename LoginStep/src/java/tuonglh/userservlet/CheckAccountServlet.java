@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;

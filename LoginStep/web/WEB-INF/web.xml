@@ -10,7 +10,7 @@
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>tuonglh.servlet.LoginServlet</servlet-class>
+        <servlet-class>tuonglh.userservlet.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,19 +12,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import tuonglh.item.Item;
-import tuonglh.item.ItemBLO;
-import tuonglh.item.ItemDAO;
-import tuonglh.item.ItemDTO;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
+import tuonglh.registration.SigninCreateError;
+import tuonglh.registration.SigninDAO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "AddItemServlet", urlPatterns = {"/AddItemServlet"})
-public class AddItemServlet extends HttpServlet {
+@WebServlet(name = "DeleteServlet", urlPatterns = {"/DeleteServlet"})
+public class DeleteServlet extends HttpServlet {
 
-    private final String SHOPPING_PAGE = "onlineShopping.jsp";
+    private final String ERROR_PAGES = "error.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +40,47 @@ public class AddItemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SHOPPING_PAGE;
-        String priceStr = request.getParameter("txtPrice");
-        String name = request.getParameter("txtName");
+
+        //B1 : get param 
+        String phoneNumber = request.getParameter("pk");
+        String isRole = request.getParameter("isAdmin");
+        String searchValue = request.getParameter("lastSearchValue");
+        boolean sendRedirect = false;
+        SigninCreateError errors = new SigninCreateError(); // khai bao noi chua loi 
+
+        String url = ERROR_PAGES;
         try {
-            Double price = Double.parseDouble(priceStr);
-            ItemBLO blo = new ItemBLO();
-            Item item = new Item(price,name);
-            boolean result = blo.addNewItem(item);
-            if(result == true){
-                url = SHOPPING_PAGE;
+            // 2.New and Call method
+            //2.1 New DAO 
+            SigninBLI blo = new SigninBLO();
+            //2.2 Call method from DAO Object
+            boolean result = false;
+            if (isRole.equals("false")) {
+                result = blo.deleteValue(phoneNumber);
             }
+            if (result == true) {
+                url = "searchLastname?"
+                        + "&txtSearchValue=" + searchValue;
+                sendRedirect = true;
+            }else{
+                sendRedirect = false;
+                errors.setAdminCannotBeDelete("Admin can't delete admin");
+                request.setAttribute("CREATE_ERROR", errors);
+                url = "DispatchServlet"
+                            + "?btAction=Search"
+                            + "&txtSearchValue=" + searchValue;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+                
+            }
+//        }catch(SQLException ex){
+//            log("SQL Exception" + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException " + ex.getMessage());
         } finally {
-            response.sendRedirect(url);
+            if (sendRedirect) {
+                response.sendRedirect(url);
+            }
         }
     }
 

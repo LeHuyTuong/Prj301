@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +15,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import tuonglh.cart.CartObject;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name="RemoveItemCartServlet", urlPatterns={"/RemoveItemCartServlet"})
-public class RemoveItemCartServlet extends HttpServlet {
-       private final String SHOPPING_PAGE ="onlineShopping.html";
-
+@WebServlet(name="CaculatorServlet", urlPatterns={"/CaculatorServlet"})
+public class CaculatorServlet extends HttpServlet {
+   private final String CALCULATOR_PAGE ="caculator.jsp"; 
+   private final String INVALID_PAGE = "invalid.html";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,22 +34,30 @@ public class RemoveItemCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        //B1 get toan bo thong tin tu client
+        String url = INVALID_PAGE;
+        try{
+            
+       
+        String num1Str = request.getParameter("txtNum1");
+        String num2Str = request.getParameter("txtNum2");
         
-        String items = request.getParameter("chkItems");
-        String url = SHOPPING_PAGE;
-        try  {
-            HttpSession session = request.getSession();
-            CartObject cart = (CartObject) session.getAttribute("CART");
-            if( cart != null){
-                cart.removeItemFromCart(items);
-            }
-            session.setAttribute("CART", cart);
-            url ="cart"
-                    + "?btAction=View your cart"
-                    + "&cboBook=Java";
+        double num1 = Double.parseDouble(num1Str);
+        double num2 = Double.parseDouble(num2Str);
+        
+        double total = num1 + num2;
+        ServletContext application = request.getServletContext();
+        application.setAttribute("txtNum1", num1Str);
+        application.setAttribute("txtNum2", num2Str);
+        application.setAttribute("result", total);
+        url = CALCULATOR_PAGE;
+        }
+        catch(NumberFormatException ex){
+            log("Number Format" + ex.getMessage());
         }
         finally{
-            response.sendRedirect(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     } 
 

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package tuonglh.servlet;
+package tuonglh.itemSerlvet;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -13,20 +13,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.List;
 import javax.naming.NamingException;
-import tuonglh.registration.SigninBLI;
-import tuonglh.registration.SigninBLO;
-import tuonglh.registration.SigninCreateError;
-import tuonglh.registration.SigninDAO;
+import tuonglh.item.Item;
+import tuonglh.item.ItemBLO;
+import tuonglh.item.ItemDAO;
+import tuonglh.item.ItemDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "DeleteServlet", urlPatterns = {"/DeleteServlet"})
-public class DeleteServlet extends HttpServlet {
+@WebServlet(name = "SearchItemServlet", urlPatterns = {"/SearchItemServlet"})
+public class SearchItemServlet extends HttpServlet {
 
-    private final String ERROR_PAGES = "error.html";
+    private final String SHOP_PAGE = "onlineShopping.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,47 +41,24 @@ public class DeleteServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        //B1 : get param 
-        String phoneNumber = request.getParameter("pk");
-        String isRole = request.getParameter("isAdmin");
-        String searchValue = request.getParameter("lastSearchValue");
-        boolean sendRedirect = false;
-        SigninCreateError errors = new SigninCreateError(); // khai bao noi chua loi 
-
-        String url = ERROR_PAGES;
+        String searchValue = request.getParameter("txtSearchItem");
+        String url = SHOP_PAGE;
         try {
-            // 2.New and Call method
-            //2.1 New DAO 
-            SigninBLI blo = new SigninBLO();
-            //2.2 Call method from DAO Object
-            boolean result = false;
-            if (isRole.equals("false")) {
-                result = blo.deleteValue(phoneNumber);
+            if (!searchValue.isEmpty()) {
+                ItemBLO blo = new ItemBLO();
+                blo.searchItems(searchValue);
+                Item result = blo.getNameByID(searchValue);
+                System.out.print(result.getItemID());
+                request.setAttribute("ITEM_VALUE", result.getItemID());
+                url = SHOP_PAGE;
             }
-            if (result == true) {
-                url = "searchLastname?"
-                        + "&txtSearchValue=" + searchValue;
-                sendRedirect = true;
-            }else{
-                sendRedirect = false;
-                errors.setAdminCannotBeDelete("Admin can't delete admin");
-                request.setAttribute("CREATE_ERROR", errors);
-                url = "DispatchServlet"
-                            + "?btAction=Search"
-                            + "&txtSearchValue=" + searchValue;
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
-                
-            }
-//        }catch(SQLException ex){
-//            log("SQL Exception" + ex.getMessage());
-//        }catch(NamingException ex){
-//            log("NamingException " + ex.getMessage());
+//        } catch (SQLException ex) {
+//            log("SQL :" + ex.getMessage());
+//        } catch (NamingException ex) {
+//            log("NamingException: " + ex.getMessage());
         } finally {
-            if (sendRedirect) {
-                response.sendRedirect(url);
-            }
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

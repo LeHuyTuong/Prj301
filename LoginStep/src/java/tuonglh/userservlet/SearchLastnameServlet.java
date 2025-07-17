@@ -3,10 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +13,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.List;
+import javax.naming.NamingException;
+import tuonglh.registration.Signin;
+import tuonglh.registration.SigninBLI;
+import tuonglh.registration.SigninBLO;
+import tuonglh.registration.SigninDAO;
+import tuonglh.registration.SigninDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name="CaculatorServlet", urlPatterns={"/CaculatorServlet"})
-public class CaculatorServlet extends HttpServlet {
-   private final String CALCULATOR_PAGE ="caculator.jsp"; 
-   private final String INVALID_PAGE = "invalid.html";
+@WebServlet(name="SearchLastnameServlet", urlPatterns={"/SearchLastnameServlet"})
+public class SearchLastnameServlet extends HttpServlet {
+    private final String SEARCH_PAGE ="search.jsp";
+    private final String SEARCH_RESULT ="search.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,33 +40,39 @@ public class CaculatorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //B1 get toan bo thong tin tu client
-        String url = INVALID_PAGE;
-        try{
-            
-       
-        String num1Str = request.getParameter("txtNum1");
-        String num2Str = request.getParameter("txtNum2");
+        //1,Get all user's information
         
-        double num1 = Double.parseDouble(num1Str);
-        double num2 = Double.parseDouble(num2Str);
-        
-        double total = num1 + num2;
-        ServletContext application = request.getServletContext();
-        application.setAttribute("txtNum1", num1Str);
-        application.setAttribute("txtNum2", num2Str);
-        application.setAttribute("result", total);
-        url = CALCULATOR_PAGE;
-        }
-        catch(NumberFormatException ex){
-            log("Number Format" + ex.getMessage());
+        String searchValue = request.getParameter("txtSearchValue");
+        String url = SEARCH_PAGE;
+        try {
+            if(!searchValue.trim().isEmpty()){
+                // ko empty trim 
+                //2 Controller call method of Model 
+                //2.1 New DAO Object 
+                    SigninBLI blo = new SigninBLO();
+                    
+                //2.2 Call Method of DAO Object
+                List<Signin> result =  blo.searchLastName(searchValue);
+                //3.Get du lieu tu method 
+//                List<SigninDTO> result = blo.getAccounts();
+                url = SEARCH_RESULT;
+                
+                // gio thi da co thong tin roi muon set attribute de hien thi view thi  se setAttri vao jsp
+                request.setAttribute("SEARCH_RESULT", result);
+            }
+//        }catch(SQLException ex){
+//            log("SQL :" + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException : " + ex.getMessage());
         }
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
     } 
-
+    
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
