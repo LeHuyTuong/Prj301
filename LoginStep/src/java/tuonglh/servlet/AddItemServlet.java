@@ -4,7 +4,6 @@
  */
 package tuonglh.servlet;
 
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,19 +11,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tuonglh.item.Item;
+import tuonglh.item.ItemBLO;
+import tuonglh.item.ItemDAO;
+import tuonglh.item.ItemDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "AddItemServlet", urlPatterns = {"/AddItemServlet"})
+public class AddItemServlet extends HttpServlet {
 
-    private final String addBookServlet = "AddToCartServlet";
-    private final String searchCartServlet = "SearchItemServlet";
-    private final String viewCartPage = "viewCart.jsp";
-    private final String REMOVE_ITEM_CART_CONTROLLER = "RemoveItemCartServlet";
-    private final String ADD_NEW_ITEM_CONTROLLER ="AddItemServlet";
+    private final String SHOPPING_PAGE = "onlineShopping.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,34 +37,19 @@ public class CartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String action = request.getParameter("btAction");
-        String url = "";
-
+        String url = SHOPPING_PAGE;
+        String priceStr = request.getParameter("txtPrice");
+        String name = request.getParameter("txtName");
         try {
-            switch (action) {
-                case "Add to Cart":
-                    url = addBookServlet;
-                    break;
-                case "View your cart":
-                    url = viewCartPage;
-                    break;
-                case "Search Item":
-                    url = searchCartServlet;
-                    break;
-                case "Remove":
-                    url = REMOVE_ITEM_CART_CONTROLLER;
-                    break;
-                case "Add New Item":
-                    url = ADD_NEW_ITEM_CONTROLLER;
-                    break;
-                default:
-                    throw new AssertionError();
+            Double price = Double.parseDouble(priceStr);
+            ItemBLO blo = new ItemBLO();
+            Item item = new Item(price,name);
+            boolean result = blo.addNewItem(item);
+            if(result == true){
+                url = SHOPPING_PAGE;
             }
-            
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
         }
     }
 

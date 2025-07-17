@@ -35,6 +35,8 @@
                                 value="${param.txtSearchValue}" /></br>
             <input type="submit" value="Search" name="btAction" />
         </form> </br>
+        <a href="onlineShopping.jsp">Shopping Now</a>
+        <c:set var="user" value="${sessionScope.USER_INFO}"/>
 
         <c:set var="searchValue" value="${param.txtSearchValue}"/>
         <c:if test="${not empty searchValue}">   
@@ -62,7 +64,7 @@
                             <tr>
                                 <td>
                                     ${counter.count}
-                                .</td>
+                                    .</td>
                                 <td>
                                     ${dto.phoneNumber}
                                     <input type="hidden" name="txtphoneNumber" 
@@ -77,10 +79,10 @@
                                 </td>
                                 <td>
                                     <input type="checkbox" name="chkRole" value="ON" 
-                                    <c:if test="${dto.role}">
-                                        checked = "checked";
-                                    </c:if>
-                                    />
+                                           <c:if test="${dto.role}">
+                                               checked = "checked";
+                                           </c:if>
+                                           />
                                 </td>
                                 <td>
                                     <c:url var="deleteLink" value="delete">
@@ -99,65 +101,65 @@
                                 </td>
                             </tr>
                         </form>    
-                        </c:forEach>
-                    </tbody>
-                </table>
+                    </c:forEach>
+                </tbody>
+            </table>
 
-            </c:if>
-            <c:if test="${empty result}">
-                <h2>
-                    <font color ="red">
-                    No record is matched !!!
-                    </font>
-                </h2>
-            </c:if>
         </c:if>
+        <c:if test="${empty result}">
+            <h2>
+                <font color ="red">
+                No record is matched !!!
+                </font>
+            </h2>
+        </c:if>
+    </c:if>
 
 
-        <%-- <% 
-            String searchValue = request.getParameter("txtSearchValue");
-            if(searchValue != null){
-                List<SigninDTO> result = 
-                (List<SigninDTO>) request.getAttribute("SEARCH_RESULT"); // setAttribute cua searchLastName
-                if(result != null){ // found
-                %>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Phone</th>
-                            <th>Password</th>
-                            <th>role</th>
-                            <th>name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            int count = 0;
-                            for(SigninDTO dto : result){
-                            %>
-                        <tr>
-                            <td>
-                                <%= ++count %>.
-                            </td>
-                            <td>
-                                <%= dto.getPhoneNumber() %>
-                            </td>
-                            <td>
-                                <%= dto.getPassword() %>
-                            </td>
-                            <td>
-                                <%= dto.isRole() %>
-                            </td>
-                            <td>
-                                <%= dto.getName() %>
-                            </td>
-                        </tr>
-                        <%
-                            }
+    <%-- <% 
+        String searchValue = request.getParameter("txtSearchValue");
+        if(searchValue != null){
+            List<SigninDTO> result = 
+            (List<SigninDTO>) request.getAttribute("SEARCH_RESULT"); // setAttribute cua searchLastName
+            if(result != null){ // found
+            %>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Phone</th>
+                        <th>Password</th>
+                        <th>role</th>
+                        <th>name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        int count = 0;
+                        for(SigninDTO dto : result){
                         %>
-                    </tbody>
-                </table>
+                    <tr>
+                        <td>
+                            <%= ++count %>.
+                        </td>
+                        <td>
+                            <%= dto.getPhoneNumber() %>
+                        </td>
+                        <td>
+                            <%= dto.getPassword() %>
+                        </td>
+                        <td>
+                            <%= dto.isRole() %>
+                        </td>
+                        <td>
+                            <%= dto.getName() %>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                </tbody>
+            </table>
 
         <%
                 }else{//not found
@@ -170,5 +172,5 @@
                 }
             }
         %> --%>
-    </body> 
+</body> 
 </html>
