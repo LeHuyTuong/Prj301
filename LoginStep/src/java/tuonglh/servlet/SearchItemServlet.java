@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import javax.naming.NamingException;
+import tuonglh.item.Item;
+import tuonglh.item.ItemBLO;
 import tuonglh.item.ItemDAO;
 import tuonglh.item.ItemDTO;
 
@@ -43,17 +45,17 @@ public class SearchItemServlet extends HttpServlet {
         String url = SHOP_PAGE;
         try {
             if (!searchValue.isEmpty()) {
-                ItemDAO dao = new ItemDAO();
-                dao.searchItems(searchValue);
-                List<ItemDTO> result = dao.getItems();
-                System.out.println(result);
-                request.setAttribute("ITEM_VALUE", result);
+                ItemBLO blo = new ItemBLO();
+                blo.searchItems(searchValue);
+                Item result = blo.getNameByID(searchValue);
+                System.out.print(result.getItemID());
+                request.setAttribute("ITEM_VALUE", result.getItemID());
                 url = SHOP_PAGE;
             }
-        } catch (SQLException ex) {
-            log("SQL :" + ex.getMessage());
-        } catch (NamingException ex) {
-            log("NamingException: " + ex.getMessage());
+//        } catch (SQLException ex) {
+//            log("SQL :" + ex.getMessage());
+//        } catch (NamingException ex) {
+//            log("NamingException: " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

@@ -12,5 +12,6 @@ import java.util.List;
  */
 public interface ItemBLI {
     List<Item> searchItems(String searchName);
-    String getNameByID(String searchName);
+    Item getNameByID(String searchName);
+    boolean addNewItem(Item item);
 }

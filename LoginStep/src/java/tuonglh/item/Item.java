@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,17 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
-    @NamedQuery(name = "Item.findByItemID", query = "SELECT i FROM Item i WHERE i.itemID = :itemID"),
     @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price"),
     @NamedQuery(name = "Item.findByName", query = "SELECT i FROM Item i WHERE i.name = :name"),
-    @NamedQuery(name = "Item.findByTime", query = "SELECT i FROM Item i WHERE i.time = :time")})
+    @NamedQuery(name = "Item.findByTime", query = "SELECT i FROM Item i WHERE i.time = :time"),
+    @NamedQuery(name = "Item.findByItemID", query = "SELECT i FROM Item i WHERE i.itemID = :itemID")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "itemID", nullable = false, length = 10)
-    private String itemID;
     @Basic(optional = false)
     @Column(name = "price", nullable = false)
     private double price;
@@ -45,25 +42,26 @@ public class Item implements Serializable {
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "itemID", nullable = false)
+    private Integer itemID;
 
     public Item() {
     }
 
-    public Item(String itemID) {
+    public Item(Integer itemID) {
         this.itemID = itemID;
     }
+    
+    public Item(double price, String name){
+        this.price = price;
+        this.name = name;
+    }
 
-    public Item(String itemID, double price) {
+    public Item(Integer itemID, double price) {
         this.itemID = itemID;
         this.price = price;
-    }
-
-    public String getItemID() {
-        return itemID;
-    }
-
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
     }
 
     public double getPrice() {
@@ -90,6 +88,20 @@ public class Item implements Serializable {
         this.time = time;
     }
 
+    public Integer getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(Integer itemID) {
+        this.itemID = itemID;
+    }
+
+    //@PrePersist: là callback được JPA gọi ngay trước khi đối tượng được persist vào database lần đầu.
+    @PrePersist
+    protected void onCreate() {
+        this.time = new Date(); //new Date() tạo ra timestamp hiện tại theo java.util.Date.
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,7 +124,7 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "tuonglh.registration.Item[ itemID=" + itemID + " ]";
+        return "tuonglh.item.Item[ itemID=" + itemID + " ]";
     }
-    
+
 }

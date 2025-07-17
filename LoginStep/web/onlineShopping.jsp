@@ -17,6 +17,10 @@
         <form action="cart" style="margin-top: 20px;">
             <input type="submit" value="View your cart" name="btAction" />
         </form>    
+        <c:set var="user" value="${sessionScope.USER_INFO}" />
+        <c:if test="${user.role == 'true'}">
+            <a href="addNewItem.jsp">Add new Item</a>
+        </c:if>
         <c:if test="${not empty param.txtSearchItem}">
             <c:set var="items" value="${requestScope.ITEM_VALUE}" />
 
