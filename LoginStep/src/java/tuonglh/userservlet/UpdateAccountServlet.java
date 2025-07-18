@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package tuonglh.servlet;
+package tuonglh.userservlet;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -14,22 +14,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import tuonglh.registration.Signin;
 import tuonglh.registration.SigninBLI;
 import tuonglh.registration.SigninBLO;
 import tuonglh.registration.SigninCreateError;
 import tuonglh.registration.SigninDAO;
-import tuonglh.registration.SigninDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "CreateAccountServlet", urlPatterns = {"/CreateAccountServlet"})
-public class CreateAccountServlet extends HttpServlet {
+@WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/UpdateAccountServlet"})
+public class UpdateAccountServlet extends HttpServlet {
 
-    private final String CREATE_PAGE = "createAccount.jsp";
-    private final String LOGIN_PAGE = "login.html";
+    private final String ERROR_PAGES = "error.html";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,61 +40,64 @@ public class CreateAccountServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //b1 get all User info 
-        String phoneNumber = request.getParameter("txtPhoneNumber");
+        //B1 get data tu request 
+        String phone = request.getParameter("txtphoneNumber");
         String password = request.getParameter("txtPassword");
-        String confirm = request.getParameter("txtConfirm");
-        String fullName = request.getParameter("txtFullName");
-        String url = CREATE_PAGE;
+        String role = request.getParameter("chkRole");
+        String searchValue = request.getParameter("lastSearchValue");
+        SigninCreateError errors = new SigninCreateError(); // khai bao noi chua loi 
 
-        SigninCreateError errors = new SigninCreateError(); // khai bao cho de loi 
         boolean foundErr = false;
-
+        boolean sendRedirt = false;
+        String url = ERROR_PAGES;
         try {
-            if (phoneNumber.trim().length() != 10) {
-                foundErr = true;
-                errors.setPhoneNumberNotFormat(
-                        "Phone Number is requestment type 10 number");
-            }
-            if (password.trim().length() < 8 || password.trim().length() > 40) {
-                foundErr = true;
-                errors.setPasswordNotLengthErr(
-                        "Password is requestment type more than 8 end less than 40");
-            } else if (!confirm.trim().equals(password.trim())) {
-                foundErr = true;
-                errors.setConfirmNotMatch("Confirm not match Password");
-            }
-            if (fullName.trim().length() < 8 || fullName.trim().length() > 40) {
-                foundErr = true;
-                errors.setFullNameNotLengthErr(
-                         "FullName is requestment type more than 8 end less than 40");
-            }
-            if (foundErr == true) {
-                request.setAttribute("CREATE_ERRORS", errors);
+            boolean isRole = Boolean.parseBoolean(role);
+            if (role != null) {
+                isRole = true;
             } else {
-                //2 call method from dao object 
-                //2.1 call dao
-                SigninBLI blo = new SigninBLO();
-                //2.2 call method
-                Signin accounts = new Signin(phoneNumber, password, false, fullName);
-                boolean result = blo.createAccount(accounts);
-                //3 process
-                if (result) {
-                    url = LOGIN_PAGE;
-                }// user is exist
+                isRole = false;
             }
-//        } catch (SQLException ex) {
-//            String msg = ex.getMessage();
-//            log("SQL " + msg);
-//            if(msg.contains("duplicate")){
-//                errors.setPhoneNumberIsExist(phoneNumber + "duplicate");
-//                request.setAttribute("CREATE_ERRORS", errors);
-//            }
-//        } catch (NamingException ex) {
-//            log("NamingException " + ex.getMessage());
+
+            // System.out.println("Bug sau result");
+            //3 Process 
+            if (password.trim().length() < 8
+                    || password.trim().length() > 20) {
+                foundErr = true;
+                errors.setPasswordNotLengthErr("Password is requirement typing from 8 to 20 characters");
+            }
+            if (foundErr) {
+                sendRedirt = false;
+                request.setAttribute("CREATE_ERROR", errors);
+                url = "DispatchServlet"
+                        + "?btAction=Search"
+                        + "&txtSearchValue=" + searchValue;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);   // sau khi ma da forward roi thi gui requestScope ra jsp de in error 
+            } else {
+                //b2 call method
+                //2.1 New DAO 
+                SigninBLI blo = new SigninBLO();
+
+                //2.2 Call method from DAO Object 
+                boolean result = blo.updateAccount(phone, password, isRole);
+                if (result == true) {
+                    url = "searchLastname?"
+                            + "&txtSearchValue=" + searchValue; // co bao nhieu input thi them bay nhieu param vao trong url 
+                }
+
+                //System.out.println("Bug nè nhan duoc url roi");
+            }// co gia tri trong DTO 
+            //  System.out.println("ket qua result" + result);
+//        }catch(SQLException ex){
+//            log("SQL:" + ex.getMessage());
+//        }catch(NamingException ex){
+//            log("NamingException : "+ ex.getMessage());
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            // System.out.println("Bug nè di thoi ");
+            if(sendRedirt){
+            response.sendRedirect(url);
+            }
+            //System.out.println("Bug nè di thoi ");
         }
     }
 

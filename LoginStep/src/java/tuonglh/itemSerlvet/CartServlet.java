@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package tuonglh.servlet;
+package tuonglh.itemSerlvet;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -12,23 +12,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
-import javax.naming.NamingException;
-import tuonglh.item.Item;
-import tuonglh.item.ItemBLO;
-import tuonglh.item.ItemDAO;
-import tuonglh.item.ItemDTO;
 
 /**
  *
  * @author USER
  */
-@WebServlet(name = "SearchItemServlet", urlPatterns = {"/SearchItemServlet"})
-public class SearchItemServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
+public class CartServlet extends HttpServlet {
 
-    private final String SHOP_PAGE = "onlineShopping.jsp";
-
+    private final String addBookServlet = "AddToCartServlet";
+    private final String searchCartServlet = "SearchItemServlet";
+    private final String viewCartPage = "viewCart.jsp";
+    private final String REMOVE_ITEM_CART_CONTROLLER = "RemoveItemCartServlet";
+    private final String ADD_NEW_ITEM_CONTROLLER ="AddItemServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,21 +37,31 @@ public class SearchItemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String searchValue = request.getParameter("txtSearchItem");
-        String url = SHOP_PAGE;
+
+        String action = request.getParameter("btAction");
+        String url = "";
+
         try {
-            if (!searchValue.isEmpty()) {
-                ItemBLO blo = new ItemBLO();
-                blo.searchItems(searchValue);
-                Item result = blo.getNameByID(searchValue);
-                System.out.print(result.getItemID());
-                request.setAttribute("ITEM_VALUE", result.getItemID());
-                url = SHOP_PAGE;
+            switch (action) {
+                case "Add to Cart":
+                    url = addBookServlet;
+                    break;
+                case "View your cart":
+                    url = viewCartPage;
+                    break;
+                case "Search Item":
+                    url = searchCartServlet;
+                    break;
+                case "Remove":
+                    url = REMOVE_ITEM_CART_CONTROLLER;
+                    break;
+                case "Add New Item":
+                    url = ADD_NEW_ITEM_CONTROLLER;
+                    break;
+                default:
+                    throw new AssertionError();
             }
-//        } catch (SQLException ex) {
-//            log("SQL :" + ex.getMessage());
-//        } catch (NamingException ex) {
-//            log("NamingException: " + ex.getMessage());
+            
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
