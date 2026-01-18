@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Online Shopping</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <h1>Book Store</h1>
+    <form action="AddToCart" method="post">
+        Choose your items:
+        <select name="cboBook" id="bookSelect" onchange="document.getElementById('itemID').value = this.value;">
+            <option value="Java">Java</option>
+            <option value="OOP">OOP</option>
+            <option value="JSP">JSP</option>
+            <option value="Netbean">Netbean</option>
+            <option value="Tomcat">Tomcat</option>
+            <option value="JSTL">JSTL</option>
+        </select><br /><br />
+        <input type="hidden" name="itemID" id="itemID" value="Java" />
+        <input type="submit" value="Add item to cart" name="btAction" />
+        <input type="submit" value="View your cart" name="btAction" />
+    </form>
+</body>
+
+</html>
